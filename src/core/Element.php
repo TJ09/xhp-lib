@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -19,46 +19,36 @@ abstract class :x:element extends :x:composable-element implements XHPRoot {
   abstract protected function render(): XHPRoot;
 
   final public function toString(): string {
-    return \HH\Asio\join($this->asyncToString());
+    if (:xhp::isChildValidationEnabled()) {
+      $this->validateChildren();
+    }
+    $that = $this->__flushRenderedRootElement();
+
+    return $that->toString();
   }
 
-  final public async function asyncToString(): Awaitable<string> {
-    $that = await $this->__flushRenderedRootElement();
-    $ret = await $that->asyncToString();
-    return $ret;
-  }
-
-  final protected async function __flushSubtree(): Awaitable<:x:primitive> {
-    $that = await $this->__flushRenderedRootElement();
-    return await $that->__flushSubtree();
-  }
-
-  protected async function __renderAndProcess(): Awaitable<XHPRoot> {
+  protected function __renderAndProcess(): XHPRoot {
     if (:xhp::isChildValidationEnabled()) {
       $this->validateChildren();
     }
 
-    if ($this instanceof XHPAwaitable) {
-      // UNSAFE - interfaces don't support 'protected': facebook/hhvm#4830
-      $composed = await $this->asyncRender();
-    } else {
       $composed = $this->render();
-    }
 
     $composed->__transferContext($this->getAllContexts());
-    if ($this instanceof XHPHasTransferAttributes) {
+    // FIXME: traits cannot implement interfaces, sadly.
+    // if ($this instanceof XHPHasTransferAttributes) {
+    if (method_exists($this, 'transferAttributesToRenderedRoot')) {
       $this->transferAttributesToRenderedRoot($composed);
     }
 
     return $composed;
   }
 
-  final protected async function __flushRenderedRootElement(
-  ): Awaitable<:x:primitive> {
+  final protected function __flushRenderedRootElement(): :x:primitive {
     $that = $this;
     // Flush root elements returned from render() to an :x:primitive
     while ($that instanceof :x:element) {
-      $that = await $that->__renderAndProcess();
+      $that = $that->__renderAndProcess();
     }
 
     if ($that instanceof :x:primitive) {

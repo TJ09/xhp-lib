@@ -1,4 +1,4 @@
-<?hh
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -11,7 +11,6 @@
 interface HasXHPHelpers
   extends HasXHPBaseHTMLHelpers, XHPHasTransferAttributes {
 }
-;
 
 /*
  * Use of this trait assumes you have inherited attributes from an HTML element.
@@ -19,8 +18,8 @@ interface HasXHPHelpers
  *
  * attribute :xhp:html-element;
  */
-trait XHPHelpers implements HasXHPHelpers {
-  require extends :x:composable-element;
+trait XHPHelpers /*implements HasXHPHelpers*/ {
+  // require extends :x:composable-element;
 
   use XHPBaseHTMLHelpers;
 
@@ -29,7 +28,7 @@ trait XHPHelpers implements HasXHPHelpers {
    * $target.
    */
   final public function copyAllAttributes(:x:composable-element $target): void {
-    $this->transferAttributesImpl($target, Set {});
+    $this->transferAttributesImpl($target, []);
   }
 
   /*
@@ -37,7 +36,7 @@ trait XHPHelpers implements HasXHPHelpers {
    * $target to $target.
    */
   final public function copyCustomAttributes(
-    :x:composable-element $target,
+    :x:composable-element $target
   ): void {
     $this->transferAttributesImpl($target);
   }
@@ -48,7 +47,7 @@ trait XHPHelpers implements HasXHPHelpers {
    */
   final public function copyAttributesExcept(
     :x:composable-element $target,
-    Set<string> $ignore,
+    array/*<string>*/ $ignore
   ): void {
     $this->transferAttributesImpl($target, $ignore);
   }
@@ -58,9 +57,9 @@ trait XHPHelpers implements HasXHPHelpers {
    * $target. This will unset all transfered attributes from $this.
    */
   final public function transferAllAttributes(
-    :x:composable-element $target,
+    :x:composable-element $target
   ): void {
-    $this->transferAttributesImpl($target, Set {}, true);
+    $this->transferAttributesImpl($target, [], true);
   }
 
   /*
@@ -68,7 +67,7 @@ trait XHPHelpers implements HasXHPHelpers {
    * $target to $target. This will unset all transfered attributes from $this.
    */
   final public function transferCustomAttributes(
-    :x:composable-element $target,
+    :x:composable-element $target
   ): void {
     $this->transferAttributesImpl($target, null, true);
   }
@@ -80,7 +79,7 @@ trait XHPHelpers implements HasXHPHelpers {
    */
   final public function transferAttributesExcept(
     :x:composable-element $target,
-    Set<string> $ignore,
+    array/*<string>*/ $ignore
   ): void {
     $this->transferAttributesImpl($target, $ignore, true);
   }
@@ -91,21 +90,21 @@ trait XHPHelpers implements HasXHPHelpers {
    */
   final private function transferAttributesImpl(
     :x:composable-element $target,
-    ?Set<string> $ignore = null,
-    bool $remove = false,
+    ?array/*<string>*/ $ignore = null,
+    bool $remove = false
   ): void {
     if ($ignore === null) {
       $ignore = :xhp:html-element::__xhpAttributeDeclaration();
     } else {
-      $ignore = array_fill_keys($ignore->toArray(), true);
+      $ignore = array_fill_keys($ignore, true);
     }
 
-    $compatible = new Map($target::__xhpAttributeDeclaration());
+    $compatible = $target::__xhpAttributeDeclaration();
     $transferAttributes = array_diff_key($this->getAttributes(), $ignore);
     foreach ($transferAttributes as $attribute => $value) {
       if (
-        $compatible->containsKey($attribute) ||
-        ReflectionXHPAttribute::IsSpecial($attribute)
+        isset($compatible[$attribute])
+        || :x:composable-element::isAttributeSpecial($attribute)
       ) {
         try {
           $target->setAttribute($attribute, $value);
@@ -127,7 +126,7 @@ trait XHPHelpers implements HasXHPHelpers {
             'problem because the behavior when transfering or copying '.
             'attributes while validation is on will be different than while '.
             'validation is off. Rename the attribute on at least one of these '.
-            'elements to fix this.',
+            'elements to fix this.'
           );
         }
         if ($remove) {
@@ -138,18 +137,18 @@ trait XHPHelpers implements HasXHPHelpers {
   }
 
   protected function getAttributeNamesThatAppendValuesOnTransfer(
-  ): ImmSet<string> {
-    return ImmSet { 'class' };
+  ): array/*<string>*/ {
+    return [ 'class' ];
   }
 
   final public function transferAttributesToRenderedRoot(
-    :x:composable-element $root,
+    :x:composable-element $root
   ): void {
     if (:xhp::isAttributeValidationEnabled() && $root instanceof :x:element) {
       if (!($root instanceof HasXHPHelpers)) {
         throw new XHPClassException(
           $this,
-          'render() must return an object using the XHPHelpers trait.',
+          'render() must return an object using the XHPHelpers trait.'
         );
       }
 
@@ -170,7 +169,7 @@ trait XHPHelpers implements HasXHPHelpers {
           '". The latter will get '.
           'overwritten (most often unexpectedly). If you are intending for '.
           'this behavior consider calling $this->removeAttribute(\'id\') '.
-          'before returning your node from compose().',
+          'before returning your node from compose().'
         );
       }
     }

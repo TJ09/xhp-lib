@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -10,5 +10,5 @@
 
 class :title extends :xhp:pcdata-element {
   category %metadata;
-  protected string $tagName = 'title';
+  protected /*string*/ $tagName = 'title';
 }

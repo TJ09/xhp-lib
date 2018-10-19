@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -12,5 +12,5 @@ class :q extends :xhp:html-element {
   attribute Stringish cite;
   category %flow, %phrase;
   children (pcdata | %phrase)*;
-  protected string $tagName = 'q';
+  protected /*string*/ $tagName = 'q';
 }

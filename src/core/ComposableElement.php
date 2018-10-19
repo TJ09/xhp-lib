@@ -1,4 +1,4 @@
-<?hh
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -8,16 +8,14 @@
  *
  */
 
-use type Facebook\TypeAssert\IncorrectTypeException;
-use namespace Facebook\TypeAssert;
-
 abstract class :x:composable-element extends :xhp {
-  private Map<string, mixed> $attributes = Map {};
-  private Vector<XHPChild> $children = Vector {};
-  private Map<string, mixed> $context = Map {};
+  private /*array*/ $attributes = array();
+  private /*array*/ $children = array();
+  private /*array*/ $context = array();
 
-  protected function init(): void {
-  }
+  private static $specialAttributes = array('data' => true, 'aria' => true);
+
+  protected function init(): void {}
 
   /**
    * A new :x:composable-element is instantiated for every literal tag
@@ -33,26 +31,13 @@ abstract class :x:composable-element extends :xhp {
    * @param $children      list of children
    */
   final public function __construct(
-    KeyedTraversable<string, mixed> $attributes,
-    Traversable<XHPChild> $children,
+    iterable/*<string, mixed>*/ $attributes,
+    iterable/*<XHPChild>*/ $children
   ) {
-    parent::__construct($attributes, $children);
     foreach ($children as $child) {
       $this->appendChild($child);
     }
-
-    foreach ($attributes as $key => $value) {
-      if (self::isSpreadKey($key)) {
-        invariant(
-          $value instanceof :x:composable-element,
-          "Only XHP can be used with an attribute spread operator",
-        );
-        $this->spreadElementImpl($value);
-      } else {
-        $this->setAttribute($key, $value);
-      }
-    }
-
+    $this->setAttributes($attributes);
     if (:xhp::isChildValidationEnabled()) {
       // There is some cost to having defaulted unused arguments on a function
       // so we leave these out and get them with func_get_args().
@@ -76,16 +61,19 @@ abstract class :x:composable-element extends :xhp {
    *
    * @param $child     single child or array of children
    */
-  final public function appendChild(mixed $child): this {
-    if ($child instanceof Traversable) {
+  final public function appendChild(/*mixed*/ $child)/*: this*/ {
+    if (is_array($child) || $child instanceof Traversable) {
       foreach ($child as $c) {
         $this->appendChild($c);
       }
     } else if ($child instanceof :x:frag) {
-      $this->children->addAll($child->getChildren());
+      foreach($child->getChildren() as $c) {
+        $this->appendChild($c);
+      }
     } else if ($child !== null) {
-      assert($child instanceof XHPChild);
-      $this->children->add($child);
+      // FIXME: See XHPChild declaration.
+      // assert($child instanceof XHPChild);
+      $this->children[] = $child;
     }
     return $this;
   }
@@ -96,11 +84,16 @@ abstract class :x:composable-element extends :xhp {
    *
    * @param $child     single child or array of children
    */
-  final public function prependChild(mixed $child): this {
-    // There's no prepend to a Vector, so reverse, append, and reverse agains
-    $this->children->reverse();
-    $this->appendChild($child);
-    $this->children->reverse();
+  final public function prependChild(/*mixed*/ $child)/*: this*/ {
+    if ($child instanceof Traversable || is_array($child)) {
+      foreach (array_reverse($child) as $c) {
+        $this->prependChild($c);
+      }
+    } else if ($child instanceof :x:frag) {
+      $this->children = array_merge($child->getChildren(), $this->children);
+    } else if ($child !== null) {
+      array_unshift($this->children, $child);
+    }
     return $this;
   }
 
@@ -110,26 +103,26 @@ abstract class :x:composable-element extends :xhp {
    *
    * @param $children  Single child or array of children
    */
-  final public function replaceChildren(...): this {
+  final public function replaceChildren(/*...*/)/*: this*/ {
     // This function has been micro-optimized
     $args = func_get_args();
-    $new_children = Vector {};
+    $new_children = array();
     foreach ($args as $xhp) {
       if ($xhp) {
         if ($xhp instanceof :x:frag) {
           foreach ($xhp->children as $child) {
-            $new_children->add($child);
+            $new_children[] = $child;
           }
         } else if (!($xhp instanceof Traversable)) {
-          $new_children->add($xhp);
+          $new_children[] = $xhp;
         } else {
           foreach ($xhp as $element) {
             if ($element instanceof :x:frag) {
               foreach ($element->children as $child) {
-                $new_children->add($child);
+                $new_children[] = $child;
               }
             } else if ($element !== null) {
-              $new_children->add($element);
+              $new_children[] = $element;
             }
           }
         }
@@ -146,30 +139,27 @@ abstract class :x:composable-element extends :xhp {
    * @param $selector   tag name or category (optional)
    * @return array
    */
-  final public function getChildren(
-    ?string $selector = null,
-  ): Vector<XHPChild> {
-    if ($selector) {
-      $children = Vector {};
+  final public function getChildren(?string $selector = null): array {
+    if (!$selector) {
+      return $this->children;
+    }
+    $result = array();
       if ($selector[0] == '%') {
         $selector = substr($selector, 1);
         foreach ($this->children as $child) {
           if ($child instanceof :xhp && $child->categoryOf($selector)) {
-            $children->add($child);
+          $result[] = $child;
           }
         }
       } else {
         $selector = :xhp::element2class($selector);
         foreach ($this->children as $child) {
           if ($child instanceof $selector) {
-            $children->add($child);
-          }
+          $result[] = $child;
         }
       }
-    } else {
-      $children = new Vector($this->children);
     }
-    return $children;
+    return $result;
   }
 
 
@@ -183,7 +173,7 @@ abstract class :x:composable-element extends :xhp {
    */
   final public function getFirstChild(?string $selector = null): ?XHPChild {
     if (!$selector) {
-      return $this->children->get(0);
+      return $this->children[0];
     } else if ($selector[0] == '%') {
       $selector = substr($selector, 1);
       foreach ($this->children as $child) {
@@ -212,11 +202,21 @@ abstract class :x:composable-element extends :xhp {
    */
   final public function getLastChild(?string $selector = null): ?XHPChild {
     $temp = $this->getChildren($selector);
-    if ($temp->count() > 0) {
-      $count = $temp->count();
-      return $temp->at($count - 1);
+    return end($temp);
     }
-    return null;
+
+  /**
+   * Returns true if the attribute is a data- or aria- attribute.
+   *
+   * @param $attr      attribute to fetch
+   * @return           bool
+   */
+  final public static function isAttributeSpecial($attr) {
+    // Must be at least 6 characters, with a '-' in the 5th position
+    return
+      isset($attr[5])
+      && $attr[4] == '-'
+      && isset(self::$specialAttributes[substr($attr, 0, 4)]);
   }
 
   /**
@@ -230,20 +230,20 @@ abstract class :x:composable-element extends :xhp {
    */
   final public function getAttribute(string $attr) {
     // Return the attribute if it's there
-    if ($this->attributes->containsKey($attr)) {
-      return $this->attributes->get($attr);
+    if (array_key_exists($attr, $this->attributes)) {
+      return $this->attributes[$attr];
     }
 
-    if (!ReflectionXHPAttribute::IsSpecial($attr)) {
+    if (!self::isAttributeSpecial($attr)) {
       // Get the declaration
-      $decl = static::__xhpReflectionAttribute($attr);
+      $decl = static::__xhpAttributeDeclaration();
 
-      if ($decl === null) {
+      if (!isset($decl[$attr])) {
         throw new XHPAttributeNotSupportedException($this, $attr);
-      } else if ($decl->isRequired()) {
+      } else if (!empty($decl[$attr][3])) {
         throw new XHPAttributeRequiredException($this, $attr);
       } else {
-        return $decl->getDefaultValue();
+        return $decl[$attr][2];
       }
     } else {
       return null;
@@ -251,21 +251,18 @@ abstract class :x:composable-element extends :xhp {
   }
 
   final public static function __xhpReflectionAttribute(
-    string $attr,
+    string $attr
   ): ?ReflectionXHPAttribute {
     $map = static::__xhpReflectionAttributes();
-    if ($map->containsKey($attr)) {
-      return $map[$attr];
-    }
-    return null;
+	return $map[$attr] ?? null;
   }
 
   final public static function __xhpReflectionAttributes(
-  ): Map<string, ReflectionXHPAttribute> {
-    static $cache = Map {};
+  ): array {
+    static $cache = array();
     $class = static::class;
-    if (!$cache->containsKey($class)) {
-      $map = Map {};
+    if (!isset($cache[$class])) {
+      $map = array();
       $decl = static::__xhpAttributeDeclaration();
       foreach ($decl as $name => $attr_decl) {
         $map[$name] = new ReflectionXHPAttribute($name, $attr_decl);
@@ -277,69 +274,25 @@ abstract class :x:composable-element extends :xhp {
 
   final public static function __xhpReflectionChildrenDeclaration(
   ): ReflectionXHPChildrenDeclaration {
-    static $cache = Map {};
+    static $cache = array();
     $class = static::class;
-    if (!$cache->containsKey($class)) {
+    if (!isset($cache[$class])) {
       $cache[$class] = new ReflectionXHPChildrenDeclaration(
         :xhp::class2element($class),
-        self::emptyInstance()->__xhpChildrenDeclaration(),
+        static::__xhpChildrenDeclaration()
       );
     }
     return $cache[$class];
   }
 
   final public static function __xhpReflectionCategoryDeclaration(
-  ): Set<string> {
+  ): array {
     return
-      new Set(array_keys(self::emptyInstance()->__xhpCategoryDeclaration()));
+      array_keys(static::__xhpCategoryDeclaration());
   }
 
-  // Work-around to call methods that should be static without a real
-  // instance.
-  private static function emptyInstance(): this {
-    return hphp_create_object_without_constructor(static::class);
-  }
-
-  final public function getAttributes(): Map<string, mixed> {
-    return $this->attributes->toMap();
-  }
-
-  /**
-   * Determines if a given XHP attribute "key" represents an XHP spread operator
-   * in the constructor.
-   */
-  private static function isSpreadKey(string $key): bool {
-    return substr($key, 0, strlen(:xhp::SPREAD_PREFIX)) === :xhp::SPREAD_PREFIX;
-  }
-
-  /**
-   * Implements the XHP spread operator in expressions like:
-   *   <foo attr1="bar" {...$xhp} />
-   *
-   * This will only copy defined attributes on $xhp to when they are also
-   * defined on $this. "Special" data-/aria- attributes will still need to be
-   * implicitly transferred, since the typechecker never knows about them.
-   *
-   * Defaults from $xhp are copied as well, if they are present.
-   */
-  protected final function spreadElementImpl(
-    :x:composable-element $element,
-  ): void {
-    foreach ($element::__xhpReflectionAttributes() as $attr_name => $attr) {
-      $our_attr = static::__xhpReflectionAttribute($attr_name);
-      if ($our_attr === null) {
-        continue;
-      }
-
-      $val = $element->getAttribute($attr_name);
-      if ($val === null) {
-        continue;
-      }
-
-      // If the receiving class has the same attribute and we had a value or
-      // a default, then copy it over.
-      $this->setAttribute($attr_name, $val);
-    }
+  final public function getAttributes(): array {
+    return $this->attributes;
   }
 
   /**
@@ -351,15 +304,15 @@ abstract class :x:composable-element extends :xhp {
    * @param $attr      attribute to set
    * @param $val       value
    */
-  final public function setAttribute(string $attr, mixed $value): this {
-    if (!ReflectionXHPAttribute::IsSpecial($attr)) {
+  final public function setAttribute(string $attr, /*mixed*/ $value)/*: this*/ {
+    if (!self::isAttributeSpecial($attr)) {
       if (:xhp::isAttributeValidationEnabled()) {
         $value = $this->validateAttributeValue($attr, $value);
       }
     } else {
       $value = (string)$value;
     }
-    $this->attributes->set($attr, $value);
+    $this->attributes[$attr] = $value;
     return $this;
   }
 
@@ -369,8 +322,8 @@ abstract class :x:composable-element extends :xhp {
    * @param $attrs    array of attributes
    */
   final public function setAttributes(
-    KeyedTraversable<string, mixed> $attrs,
-  ): this {
+    iterable/*<string, mixed>*/ $attrs
+  )/*: this*/ {
     foreach ($attrs as $key => $value) {
       $this->setAttribute($key, $value);
     }
@@ -384,7 +337,7 @@ abstract class :x:composable-element extends :xhp {
    * @param $attr attribute to check
    */
   final public function isAttributeSet(string $attr): bool {
-    return $this->attributes->containsKey($attr);
+    return array_key_exists($attr, $this->attributes);
   }
 
   /**
@@ -394,13 +347,11 @@ abstract class :x:composable-element extends :xhp {
    * @param $attr      attribute to remove
    * @param $val       value
    */
-  final public function removeAttribute(string $attr): this {
-    if (!ReflectionXHPAttribute::IsSpecial($attr)) {
-      if (:xhp::isAttributeValidationEnabled()) {
+  final public function removeAttribute(string $attr)/*: this*/ {
+    if (!self::isAttributeSpecial($attr)) {
         $value = $this->validateAttributeValue($attr, null);
       }
-    }
-    $this->attributes->removeKey($attr);
+    unset($this->attributes[$attr]);
     return $this;
   }
 
@@ -411,17 +362,18 @@ abstract class :x:composable-element extends :xhp {
    * @param $attr      attribute to set
    * @param $val       value
    */
-  final public function forceAttribute(string $attr, mixed $value): this {
-    $this->attributes->set($attr, $value);
+  final public function forceAttribute(string $attr, /*mixed*/ $value)/*: this*/ {
+    $this->attributes[$attr] = $value;
     return $this;
   }
+
   /**
    * Returns all contexts currently set.
    *
    * @return array  All contexts
    */
-  final public function getAllContexts(): Map<string, mixed> {
-    return $this->context->toMap();
+  final public function getAllContexts(): array/*<string, mixed>*/ {
+    return $this->context;
   }
 
   /**
@@ -431,11 +383,8 @@ abstract class :x:composable-element extends :xhp {
    * @param mixed $default  The value to return if not set (optional)
    * @return mixed          The context value or $default
    */
-  final public function getContext(string $key, mixed $default = null): mixed {
-    if ($this->context->containsKey($key)) {
-      return $this->context->get($key);
-    }
-    return $default;
+  final public function getContext(string $key, /*mixed*/ $default = null)/*: mixed*/ {
+    return idx($this->context, $key, $default);
   }
 
   /**
@@ -449,8 +398,8 @@ abstract class :x:composable-element extends :xhp {
    * @param mixed $default  if $key is a string, the value to set
    * @return :xhp           $this
    */
-  final public function setContext(string $key, mixed $value): this {
-    $this->context->set($key, $value);
+  final public function setContext(string $key, /*mixed*/ $value)/*: this*/ {
+    $this->context[$key] = $value;
     return $this;
   }
 
@@ -464,8 +413,10 @@ abstract class :x:composable-element extends :xhp {
    * @param Map $context  A map of key/value pairs
    * @return :xhp         $this
    */
-  final public function addContextMap(Map<string, mixed> $context): this {
-    $this->context->setAll($context);
+  final public function addContextMap(iterable/*<string, mixed>*/ $context)/*: this*/ {
+    foreach($context as $key => $value) {
+      $this->context[$key] = $value;
+    }
     return $this;
   }
 
@@ -477,16 +428,38 @@ abstract class :x:composable-element extends :xhp {
    * @param array $parentContext  The context to transfer
    */
   final protected function __transferContext(
-    Map<string, mixed> $parentContext,
+    iterable/*<string, mixed>*/ $parentContext
   ): void {
     foreach ($parentContext as $key => $value) {
-      if (!$this->context->containsKey($key)) {
-        $this->context->set($key, $value);
+      if (!array_key_exists($key, $this->context)) {
+        $this->context[$key] = $value;
       }
     }
   }
 
-  abstract protected function __flushSubtree(): Awaitable<:x:primitive>;
+  final protected function __flushElementChildren() {
+
+    // Flush all :xhp elements to x:primitive's
+    $ln = count($this->children);
+    for ($ii = 0; $ii < $ln; ++$ii) {
+      $child = $this->children[$ii];
+      if ($child instanceof :x:composable-element) {
+        $child->__transferContext($this->context);
+      }
+
+      if ($child instanceof :x:element) {
+        $child = $child->__flushRenderedRootElement();
+
+        if ($child instanceof :x:frag) {
+          array_splice($this->children, $ii, 1, $child->getChildren());
+          $ln = count($this->children);
+          --$ii;
+        } else {
+          $this->children[$ii] = $child;
+        }
+      }
+    }
+  }
 
   /**
    * Defined in elements by the `attribute` keyword. The declaration is simple.
@@ -498,7 +471,7 @@ abstract class :x:composable-element extends :xhp {
    * Attribute types are suggested by the TYPE_* constants.
    */
   protected static function &__xhpAttributeDeclaration(
-  ): array<string, array<int, mixed>> {
+  )/*: array*/ {
     static $decl = array();
     return $decl;
   }
@@ -507,7 +480,7 @@ abstract class :x:composable-element extends :xhp {
    * Defined in elements by the `category` keyword. This is just a list of all
    * categories an element belongs to. Each category is a key with value 1.
    */
-  protected function &__xhpCategoryDeclaration(): array<string, int> {
+  protected function &__xhpCategoryDeclaration()/*: array*/ {
     static $decl = array();
     return $decl;
   }
@@ -519,7 +492,7 @@ abstract class :x:composable-element extends :xhp {
    * respectively. Otherwise you're dealing with an array which is just the
    * biggest mess you've ever seen.
    */
-  protected function &__xhpChildrenDeclaration(): mixed {
+  protected function &__xhpChildrenDeclaration()/*: mixed*/ {
     static $decl = 1;
     return $decl;
   }
@@ -528,18 +501,18 @@ abstract class :x:composable-element extends :xhp {
    * Throws an exception if $val is not a valid value for the attribute $attr
    * on this element.
    */
-  final protected function validateAttributeValue<T>(
+  final protected function validateAttributeValue/*<T>*/(
     string $attr,
-    T $val,
-  ): mixed {
-    $decl = static::__xhpReflectionAttribute($attr);
-    if ($decl === null) {
+/*T*/ $val
+  )/*: mixed*/ {
+    $decl = static::__xhpAttributeDeclaration();
+    if (!isset($decl[$attr])) {
       throw new XHPAttributeNotSupportedException($this, $attr);
     }
     if ($val === null) {
       return null;
     }
-    switch ($decl->getValueType()) {
+    switch ($decl[$attr][0]) {
       case XHPAttributeType::TYPE_STRING:
         if (!is_string($val)) {
           $val = XHPAttributeCoercion::CoerceToString($this, $attr, $val);
@@ -571,7 +544,7 @@ abstract class :x:composable-element extends :xhp {
         break;
 
       case XHPAttributeType::TYPE_OBJECT:
-        $class = $decl->getValueClass();
+        $class = $decl[$attr][1];
         if ($val instanceof $class) {
           break;
         }
@@ -579,29 +552,22 @@ abstract class :x:composable-element extends :xhp {
           break;
         }
         // Things that are a valid array key without any coercion
-        if ($class === 'HH\arraykey') {
+        if ($class === 'arraykey') {
           if (is_int($val) || is_string($val)) {
             break;
           }
         }
-        if ($class === 'HH\num') {
+        if ($class === 'num') {
           if (is_int($val) || is_float($val)) {
             break;
           }
         }
         if (is_array($val)) {
-          try {
-            $type_structure =
-              (new ReflectionTypeAlias($class))->getResolvedTypeStructure();
-            /* HH_FIXME[4110] $type_structure is an array, but should be a
-             * TypeStructure<T> */
-            TypeAssert\matches_type_structure($type_structure, $val);
-            break;
-          } catch (ReflectionException $_) {
-            // handled below
-          } catch (IncorrectTypeException $_) {
-            // handled below
-          }
+          trigger_error(
+            'Allowing array as object type '.$class.' due to dropped shape support',
+            E_USER_DEPRECATED
+          );
+          break;
         }
         throw new XHPInvalidAttributeException($this, $class, $attr, $val);
         break;
@@ -610,8 +576,9 @@ abstract class :x:composable-element extends :xhp {
         break;
 
       case XHPAttributeType::TYPE_ENUM:
-        if (!(is_string($val) && $decl->getEnumValues()->contains($val))) {
-          $enums = 'enum("'.implode('","', $decl->getEnumValues()).'")';
+        $enum_values = $decl[$attr][1];
+        if (!(is_string($val) && array_search($val, $enum_values) !== false)) {
+          $enums = 'enum("' . implode('","', $enum_values) . '")';
           throw new XHPInvalidAttributeException($this, $enums, $attr, $val);
         }
         break;
@@ -621,7 +588,7 @@ abstract class :x:composable-element extends :xhp {
           $this,
           'callable',
           $attr,
-          'not supported in XHP-Lib 2.0 or higher.',
+          'not supported in XHP-Lib 2.0 or higher.'
         );
     }
     return $val;
@@ -631,156 +598,177 @@ abstract class :x:composable-element extends :xhp {
    * Validates that this element's children match its children descriptor, and
    * throws an exception if that's not the case.
    */
-  final protected function validateChildren(): void {
-    $decl = self::__xhpReflectionChildrenDeclaration();
-    $type = $decl->getType();
-    if ($type === XHPChildrenDeclarationType::ANY_CHILDREN) {
+  final protected function validateChildren() {
+    $decl = $this->__xhpChildrenDeclaration();
+    if ($decl === XHPChildrenDeclarationType::ANY_CHILDREN) {
       return;
     }
-    if ($type === XHPChildrenDeclarationType::NO_CHILDREN) {
+    if ($decl === XHPChildrenDeclarationType::NO_CHILDREN) {
       if ($this->children) {
         throw new XHPInvalidChildrenException($this, 0);
       } else {
         return;
       }
     }
-    list($ret, $ii) =
-      $this->validateChildrenExpression($decl->getExpression(), 0);
-    if (!$ret || $ii < count($this->children)) {
-      if (
-        isset($this->children[$ii]) &&
-        $this->children[$ii] instanceof XHPAlwaysValidChild
-      ) {
+    $ii = 0;
+    if (!$this->validateChildrenExpression($decl, $ii) ||
+        $ii < count($this->children)) {
+      if (isset($this->children[$ii])
+          && $this->children[$ii] instanceof XHPAlwaysValidChild) {
         return;
       }
       throw new XHPInvalidChildrenException($this, $ii);
     }
   }
 
-  final private function validateChildrenExpression(
-    ReflectionXHPChildrenExpression $expr,
-    int $index,
-  ): (bool, int) {
-    switch ($expr->getType()) {
+  final private function validateChildrenExpression($decl, &$index) {
+    switch ($decl[0]) {
       case XHPChildrenExpressionType::SINGLE:
         // Exactly once -- :fb-thing
-        return $this->validateChildrenRule($expr, $index);
+        if ($this->validateChildrenRule($decl[1], $decl[2], $index)) {
+          return true;
+        }
+        return false;
+
       case XHPChildrenExpressionType::ANY_NUMBER:
         // Zero or more times -- :fb-thing*
-        do {
-          list($ret, $index) = $this->validateChildrenRule($expr, $index);
-        } while ($ret);
-        return tuple(true, $index);
+        while ($this->validateChildrenRule($decl[1], $decl[2], $index));
+        return true;
 
       case XHPChildrenExpressionType::ZERO_OR_ONE:
         // Zero or one times -- :fb-thing?
-        list($_, $index) = $this->validateChildrenRule($expr, $index);
-        return tuple(true, $index);
+        if ($this->validateChildrenRule($decl[1], $decl[2], $index));
+        return true;
 
       case XHPChildrenExpressionType::ONE_OR_MORE:
         // One or more times -- :fb-thing+
-        list($ret, $index) = $this->validateChildrenRule($expr, $index);
-        if (!$ret) {
-          return tuple(false, $index);
+        if (!$this->validateChildrenRule($decl[1], $decl[2], $index)) {
+          return false;
         }
-        do {
-          list($ret, $index) = $this->validateChildrenRule($expr, $index);
-        } while ($ret);
-        return tuple(true, $index);
+        while ($this->validateChildrenRule($decl[1], $decl[2], $index));
+        return true;
 
       case XHPChildrenExpressionType::SUB_EXPR_SEQUENCE:
         // Specific order -- :fb-thing, :fb-other-thing
         $oindex = $index;
-        list($sub_expr_1, $sub_expr_2) = $expr->getSubExpressions();
-        list($ret, $index) =
-          $this->validateChildrenExpression($sub_expr_1, $index);
-        if ($ret) {
-          list($ret, $index) =
-            $this->validateChildrenExpression($sub_expr_2, $index);
+        if ($this->validateChildrenExpression($decl[1], $index) &&
+            $this->validateChildrenExpression($decl[2], $index)) {
+          return true;
         }
-        if ($ret) {
-          return tuple(true, $index);
-        }
-        return tuple(false, $oindex);
+        $index = $oindex;
+        return false;
 
       case XHPChildrenExpressionType::SUB_EXPR_DISJUNCTION:
         // Either or -- :fb-thing | :fb-other-thing
-        $oindex = $index;
-        list($sub_expr_1, $sub_expr_2) = $expr->getSubExpressions();
-        list($ret, $index) =
-          $this->validateChildrenExpression($sub_expr_1, $index);
-        if (!$ret) {
-          list($ret, $index) =
-            $this->validateChildrenExpression($sub_expr_2, $index);
+        if ($this->validateChildrenExpression($decl[1], $index) ||
+            $this->validateChildrenExpression($decl[2], $index)) {
+          return true;
         }
-        if ($ret) {
-          return tuple(true, $index);
-        }
-        return tuple(false, $oindex);
+        return false;
     }
   }
 
-  final private function validateChildrenRule(
-    ReflectionXHPChildrenExpression $expr,
-    int $index,
-  ): (bool, int) {
-    switch ($expr->getConstraintType()) {
+  final private function validateChildrenRule($type, $rule, &$index) {
+    switch ($type) {
       case XHPChildrenConstraintType::ANY:
-        if ($this->children->containsKey($index)) {
-          return tuple(true, $index + 1);
+        if (isset($this->children[$index])) {
+          ++$index;
+          return true;
         }
-        return tuple(false, $index);
+        return false;
 
       case XHPChildrenConstraintType::PCDATA:
-        if (
-          $this->children->containsKey($index) &&
-          !($this->children->get($index) instanceof :xhp)
-        ) {
-          return tuple(true, $index + 1);
+        if (isset($this->children[$index]) &&
+            !($this->children[$index] instanceof :xhp)) {
+          ++$index;
+          return true;
         }
-        return tuple(false, $index);
+        return false;
 
       case XHPChildrenConstraintType::ELEMENT:
-        $class = $expr->getConstraintString();
-        if (
-          $this->children->containsKey($index) &&
-          $this->children->get($index) instanceof $class
-        ) {
-          return tuple(true, $index + 1);
+        if (isset($this->children[$index]) &&
+            $this->children[$index] instanceof $rule) {
+          ++$index;
+          return true;
         }
-        return tuple(false, $index);
+        return false;
 
       case XHPChildrenConstraintType::CATEGORY:
-        if (
-          !$this->children->containsKey($index) ||
-          !($this->children->get($index) instanceof :xhp)
-        ) {
-          return tuple(false, $index);
+        if (!isset($this->children[$index]) ||
+            !($this->children[$index] instanceof :xhp)) {
+          return false;
         }
-        $category = :xhp::class2element($expr->getConstraintString());
-        $child = $this->children->get($index);
+        $category = :xhp::class2element($rule);
+        $child = $this->children[$index];
         assert($child instanceof :xhp);
         $categories = $child->__xhpCategoryDeclaration();
         if (empty($categories[$category])) {
-          return tuple(false, $index);
+          return false;
         }
-        return tuple(true, $index + 1);
+        ++$index;
+        return true;
 
-      case XHPChildrenConstraintType::SUB_EXPR:
-        return
-          $this->validateChildrenExpression($expr->getSubExpression(), $index);
+      case 5: // nested rule -- ((:fb-thing, :fb-other-thing)*, :fb:thing-footer)
+        return $this->validateChildrenExpression($rule, $index);
     }
   }
 
   /**
    * Returns the human-readable `children` declaration as seen in this class's
    * source code.
-   *
-   * Keeping this wrapper around reflection, as it fits well with
-   * __getChildrenDescription.
    */
-  public function __getChildrenDeclaration(): string {
-    return (string)self::__xhpReflectionChildrenDeclaration();
+  final public function __getChildrenDeclaration() {
+    $decl = $this->__xhpChildrenDeclaration();
+    if ($decl === 1) {
+      return 'any';
+    }
+    if ($decl === 0) {
+      return 'empty';
+    }
+    return $this->renderChildrenDeclaration($decl);
+  }
+
+  final private function renderChildrenDeclaration($decl) {
+    switch ($decl[0]) {
+      case 0:
+        return $this->renderChildrenRule($decl[1], $decl[2]);
+
+      case 1:
+        return $this->renderChildrenRule($decl[1], $decl[2]) . '*';
+
+      case 2:
+        return $this->renderChildrenRule($decl[1], $decl[2]) . '?';
+
+      case 3:
+        return $this->renderChildrenRule($decl[1], $decl[2]) . '+';
+
+      case 4:
+        return $this->renderChildrenDeclaration($decl[1]) . ',' .
+          $this->renderChildrenDeclaration($decl[2]);
+
+      case 5:
+        return $this->renderChildrenDeclaration($decl[1]) . '|' .
+          $this->renderChildrenDeclaration($decl[2]);
+    }
+  }
+
+  final private function renderChildrenRule($type, $rule) {
+    switch ($type) {
+      case 1:
+        return 'any';
+
+      case 2:
+        return 'pcdata';
+
+      case 3:
+        return ':' . :xhp::class2element($rule);
+
+      case 4:
+        return '%' . $rule;
+
+      case 5:
+        return '(' . $this->renderChildrenDeclaration($rule) . ')';
+    }
   }
 
   /**

@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -13,5 +13,5 @@ class :ruby extends :xhp:html-element {
   children (
     (pcdata | :rb)+ | ((:rp, :rt) | (:rp, :rtc) | (:rt, :rp) | (:rtc, :rp))+
   );
-  protected string $tagName = 'ruby';
+  protected /*string*/ $tagName = 'ruby';
 }

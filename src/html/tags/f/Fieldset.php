@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -15,5 +15,5 @@ class :fieldset extends :xhp:html-element {
     Stringish name;
   category %flow;
   children (:legend?, (pcdata | %flow)*);
-  protected string $tagName = 'fieldset';
+  protected /*string*/ $tagName = 'fieldset';
 }

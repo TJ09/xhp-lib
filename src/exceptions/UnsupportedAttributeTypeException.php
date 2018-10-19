@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -13,12 +13,12 @@ class XHPUnsupportedAttributeTypeException extends XHPException {
     :xhp $that,
     string $type,
     string $attr,
-    string $reason,
+    string $reason
   ) {
     parent::__construct(
       "Attribute `$attr` in element `".
       :xhp::class2element(get_class($that)).
-      "` has unsupported type `$type`: $reason",
+      "` has unsupported type `$type`: $reason"
     );
   }
 }

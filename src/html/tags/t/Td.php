@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -14,5 +14,5 @@ class :td extends :xhp:html-element {
     Stringish headers,
     int rowspan;
   children (pcdata | %flow)*;
-  protected string $tagName = 'td';
+  protected /*string*/ $tagName = 'td';
 }

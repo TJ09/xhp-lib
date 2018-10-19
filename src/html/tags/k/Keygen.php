@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -17,5 +17,5 @@ class :keygen extends :xhp:html-singleton {
     Stringish keytype,
     Stringish name;
   category %flow, %phrase, %interactive;
-  protected string $tagName = 'keygen';
+  protected /*string*/ $tagName = 'keygen';
 }

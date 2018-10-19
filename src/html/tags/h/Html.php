@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -13,5 +13,5 @@ class :html extends :xhp:html-element {
     Stringish manifest,
     Stringish xmlns;
   children (:head, :body);
-  protected string $tagName = 'html';
+  protected /*string*/ $tagName = 'html';
 }

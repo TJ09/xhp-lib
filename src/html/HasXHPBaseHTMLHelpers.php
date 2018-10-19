@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -9,10 +9,10 @@
  */
 
 interface HasXHPBaseHTMLHelpers {
-  require extends :x:composable-element;
+  // require extends :x:composable-element;
 
-  public function addClass(string $class): this;
-  public function conditionClass(bool $cond, string $class): this;
+  public function addClass(string $class)/*: this*/;
+  public function conditionClass(bool $cond, string $class)/*: this*/;
   public function requireUniqueID(): string;
   public function getID(): string;
 }

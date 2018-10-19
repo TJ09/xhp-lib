@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -10,5 +10,5 @@
 
 class :hr extends :xhp:html-singleton {
   category %flow;
-  protected string $tagName = 'hr';
+  protected /*string*/ $tagName = 'hr';
 }

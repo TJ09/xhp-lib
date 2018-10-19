@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -11,5 +11,5 @@
 class :ul extends :xhp:html-element {
   category %flow;
   children (:li)*;
-  protected string $tagName = 'ul';
+  protected /*string*/ $tagName = 'ul';
 }

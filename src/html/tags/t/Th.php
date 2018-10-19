@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -17,5 +17,5 @@ class :th extends :xhp:html-element {
     enum {'col', 'colgroup', 'row', 'rowgroup'} scope,
     Stringish sorted;
   children (pcdata | %flow)*;
-  protected string $tagName = 'th';
+  protected /*string*/ $tagName = 'th';
 }

@@ -1,4 +1,4 @@
-<?hh
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -26,26 +26,6 @@ class :test:xhphelpers extends :x:element {
   }
 }
 
-class :test:async:no-xhphelpers extends :x:element {
-  use XHPAsync;
-  use XHPBaseHTMLHelpers;
-  attribute :xhp:html-element;
-
-  protected async function asyncRender(): Awaitable<XHPRoot> {
-    return <div />;
-  }
-}
-
-class :test:async:xhphelpers extends :x:element {
-  use XHPAsync;
-  use XHPHelpers;
-  attribute :xhp:html-element;
-
-  protected async function asyncRender(): Awaitable<XHPRoot> {
-    return <div />;
-  }
-}
-
 class :test:with-class-on-root extends :x:element {
   use XHPHelpers;
   attribute :xhp:html-element;
@@ -63,22 +43,8 @@ class XHPHelpersTest extends PHPUnit_Framework_TestCase {
     $this->assertSame('<div></div>', $x->toString());
   }
 
-  public function testTransferAttributesAsyncWithoutHelpers(): void {
-    $x = <test:async:no-xhphelpers data-foo="bar" />;
-    $this->assertSame('<div></div>', $x->toString());
-    $this->assertNotEmpty($x->getID());
-    $this->assertSame('<div></div>', $x->toString());
-  }
-
   public function testTransferAttributesWithHelpers(): void {
     $x = <test:xhphelpers data-foo="bar" />;
-    $this->assertSame('<div data-foo="bar"></div>', $x->toString());
-    $this->assertNotEmpty($x->getID());
-    $this->assertSame('<div id="'.$x->getID().'"></div>', $x->toString());
-  }
-
-  public function testTransferAttributesAsyncWithHelpers(): void {
-    $x = <test:async:xhphelpers data-foo="bar" />;
     $this->assertSame('<div data-foo="bar"></div>', $x->toString());
     $this->assertNotEmpty($x->getID());
     $this->assertSame('<div id="'.$x->getID().'"></div>', $x->toString());
@@ -111,7 +77,7 @@ class XHPHelpersTest extends PHPUnit_Framework_TestCase {
     $x = <test:with-class-on-root class="extraClass" />;
     $this->assertSame(
       '<div class="rootClass extraClass"></div>',
-      $x->toString(),
+      $x->toString()
     );
   }
 
@@ -127,7 +93,7 @@ class XHPHelpersTest extends PHPUnit_Framework_TestCase {
       </test:xhphelpers>;
     $this->assertSame(
       '<div class="herp"><div class="derp"></div></div>',
-      $x->toString(),
+      $x->toString()
     );
   }
 }

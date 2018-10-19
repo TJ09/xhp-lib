@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -10,5 +10,5 @@
 
 class :figcaption extends :xhp:html-element {
   children (pcdata | %flow)*;
-  protected string $tagName = 'figcaption';
+  protected /*string*/ $tagName = 'figcaption';
 }

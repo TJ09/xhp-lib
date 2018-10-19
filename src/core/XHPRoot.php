@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -9,5 +9,5 @@
  */
 
 interface XHPRoot extends XHPChild {
-  require extends :x:composable-element;
+  // require extends :x:composable-element;
 }

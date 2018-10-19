@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -11,5 +11,5 @@
 class :picture extends :xhp:html-element {
   category %flow, %phrase;
   children (:source*, :img);
-  protected string $tagName = 'picture';
+  protected /*string*/ $tagName = 'picture';
 }

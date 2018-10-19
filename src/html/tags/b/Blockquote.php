@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -12,5 +12,5 @@ class :blockquote extends :xhp:html-element {
   attribute Stringish cite;
   category %flow, %sectioning;
   children (pcdata | %flow)*;
-  protected string $tagName = 'blockquote';
+  protected /*string*/ $tagName = 'blockquote';
 }

@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -11,5 +11,5 @@
 class :aside extends :xhp:html-element {
   category %flow, %sectioning;
   children (pcdata | %flow)*;
-  protected string $tagName = 'aside';
+  protected /*string*/ $tagName = 'aside';
 }

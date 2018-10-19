@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -13,5 +13,5 @@ class :base extends :xhp:html-singleton {
     Stringish href,
     Stringish target;
   category %metadata;
-  protected string $tagName = 'base';
+  protected /*string*/ $tagName = 'base';
 }

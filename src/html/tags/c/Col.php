@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -10,5 +10,5 @@
 
 class :col extends :xhp:html-singleton {
   attribute int span;
-  protected string $tagName = 'col';
+  protected /*string*/ $tagName = 'col';
 }

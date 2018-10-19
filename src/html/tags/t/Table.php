@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -19,5 +19,5 @@ class :table extends :xhp:html-element {
     :thead?,
     ((:tfoot, (:tbody+ | :tr*)) | ((:tbody+ | :tr*), :tfoot?))
   );
-  protected string $tagName = 'table';
+  protected /*string*/ $tagName = 'table';
 }

@@ -1,4 +1,4 @@
-<?hh // decl
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -7,6 +7,7 @@
  *  LICENSE file in the root directory of this source tree.
  *
  */
+
 // Using decl because this test intentional passes the wrong types for
 // attributes
 
@@ -23,8 +24,8 @@ class :test:attribute-coercion-modes extends :x:element {
 }
 
 class AttributesCoercionModeTest extends PHPUnit_Framework_TestCase {
-  private ?XHPAttributeCoercionMode $coercionMode;
-  private mixed $errorReporting;
+  private /*?XHPAttributeCoercionMode*/ $coercionMode;
+  private /*mixed*/ $errorReporting;
 
   public function setUp(): void {
     $this->coercionMode = XHPAttributeCoercion::GetMode();
@@ -59,48 +60,48 @@ class AttributesCoercionModeTest extends PHPUnit_Framework_TestCase {
    * @expectedException XHPInvalidAttributeException
    */
   public function testIntishStringAsInt(): void {
-    XHPAttributeCoercion::SetMode(XHPAttributeCoercionMode::THROW_EXCEPTION);
-    $x = <test:attribute-coercion-modes myint="1" />;
+      XHPAttributeCoercion::SetMode(XHPAttributeCoercionMode::THROW_EXCEPTION);
+      $x = <test:attribute-coercion-modes myint="1" />;
   }
 
   /**
    * @expectedException XHPInvalidAttributeException
    */
   public function testFloatAsInt(): void {
-    XHPAttributeCoercion::SetMode(XHPAttributeCoercionMode::THROW_EXCEPTION);
-    $x = <test:attribute-coercion-modes myint={1.23} />;
+      XHPAttributeCoercion::SetMode(XHPAttributeCoercionMode::THROW_EXCEPTION);
+      $x = <test:attribute-coercion-modes myint={1.23} />;
   }
 
   /**
    * @expectedException XHPInvalidAttributeException
    */
   public function testIntAsFloat(): void {
-    XHPAttributeCoercion::SetMode(XHPAttributeCoercionMode::THROW_EXCEPTION);
-    $x = <test:attribute-coercion-modes myfloat={2} />;
+      XHPAttributeCoercion::SetMode(XHPAttributeCoercionMode::THROW_EXCEPTION);
+      $x = <test:attribute-coercion-modes myfloat={2} />;
   }
 
   /**
    * @expectedException XHPInvalidAttributeException
    */
   public function testIntAsString(): void {
-    XHPAttributeCoercion::SetMode(XHPAttributeCoercionMode::THROW_EXCEPTION);
-    $x = <test:attribute-coercion-modes mystring={2} />;
+      XHPAttributeCoercion::SetMode(XHPAttributeCoercionMode::THROW_EXCEPTION);
+      $x = <test:attribute-coercion-modes mystring={2} />;
   }
 
   /**
    * @expectedException XHPInvalidAttributeException
    */
   public function testIntAsBool(): void {
-    XHPAttributeCoercion::SetMode(XHPAttributeCoercionMode::THROW_EXCEPTION);
-    $x = <test:attribute-coercion-modes mybool={1} />;
+      XHPAttributeCoercion::SetMode(XHPAttributeCoercionMode::THROW_EXCEPTION);
+      $x = <test:attribute-coercion-modes mybool={1} />;
   }
 
   /**
    * @expectedException XHPInvalidAttributeException
    */
   public function testStringAsBool(): void {
-    XHPAttributeCoercion::SetMode(XHPAttributeCoercionMode::THROW_EXCEPTION);
-    $x = <test:attribute-coercion-modes mybool="true" />;
+      XHPAttributeCoercion::SetMode(XHPAttributeCoercionMode::THROW_EXCEPTION);
+      $x = <test:attribute-coercion-modes mybool="true" />;
   }
 
   public function testSilentCoercion(): void {

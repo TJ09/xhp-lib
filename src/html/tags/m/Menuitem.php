@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -18,5 +18,5 @@ class :menuitem extends :xhp:html-singleton {
     Stringish icon,
     Stringish radiogroup,
     enum {'checkbox', 'command', 'radio'} type;
-  protected string $tagName = 'menuitem';
+  protected /*string*/ $tagName = 'menuitem';
 }

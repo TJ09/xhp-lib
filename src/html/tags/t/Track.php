@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -15,5 +15,5 @@ class :track extends :xhp:html-singleton {
     Stringish label,
     Stringish src,
     Stringish srclang;
-  protected string $tagName = 'track';
+  protected /*string*/ $tagName = 'track';
 }

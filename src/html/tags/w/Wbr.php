@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -10,5 +10,5 @@
 
 class :wbr extends :xhp:html-singleton {
   category %flow, %phrase;
-  protected string $tagName = 'wbr';
+  protected /*string*/ $tagName = 'wbr';
 }

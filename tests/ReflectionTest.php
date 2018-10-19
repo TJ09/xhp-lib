@@ -1,4 +1,4 @@
-<?hh
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -22,47 +22,50 @@ class :test:for-reflection extends :x:element {
 }
 
 class ReflectionTest extends PHPUnit_Framework_TestCase {
-  private ?ReflectionXHPClass $rxc;
+  private /*?ReflectionXHPClass*/ $rxc;
 
   public function setUp(): void {
     $this->rxc = new ReflectionXHPClass(:test:for-reflection::class);
   }
 
   public function testClassName(): void {
-    $this->assertSame(:test:for-reflection::class, $this->rxc?->getClassName());
+    $this->assertSame(:test:for-reflection::class, nullsafe($this->rxc)->getClassName());
   }
 
   public function testElementName(): void {
-    $this->assertSame('test:for-reflection', $this->rxc?->getElementName());
+    $this->assertSame('test:for-reflection', nullsafe($this->rxc)->getElementName());
   }
 
   public function testReflectionClass(): void {
-    $rc = $this->rxc?->getReflectionClass();
+    $rc = nullsafe($this->rxc)->getReflectionClass();
     $this->assertInstanceOf(ReflectionClass::class, $rc);
-    $this->assertSame(:test:for-reflection::class, $rc?->getName());
+    $this->assertSame(:test:for-reflection::class, nullsafe($rc)->getName());
   }
 
   public function testGetChildren(): void {
-    $children = $this->rxc?->getChildren();
+    $children = nullsafe($this->rxc)->getChildren();
     $this->assertInstanceOf(ReflectionXHPChildrenDeclaration::class, $children);
     $this->assertSame('(:div+,(:code,:a)?)', (string)$children);
   }
 
   public function testGetAttributes(): void {
-    $attrs = $this->rxc?->getAttributes();
+    $attrs = nullsafe($this->rxc)->getAttributes();
     $this->assertNotEmpty($attrs);
     $this->assertEquals(
-      Map {
+      [
         'mystring' => 'string mystring @required',
         'myenum' => "enum {'herp', 'derp'} myenum",
         'mystringwithdefault' => "string mystringwithdefault = 'mydefault'",
-      },
-      $attrs?->map($attr ==> (string)$attr),
+      ],
+      array_map(
+        function($attr) { return (string)$attr; },
+        $attrs ?? []
+      )
     );
   }
 
   public function testGetCategories(): void {
-    $categories = $this->rxc?->getCategories();
-    $this->assertEquals(Set { 'herp', 'derp' }, $categories);
+    $categories = nullsafe($this->rxc)->getCategories();
+    $this->assertEquals([ 'herp', 'derp' ], $categories);
   }
 }

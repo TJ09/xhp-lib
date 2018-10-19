@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -11,5 +11,5 @@
 class :colgroup extends :xhp:html-element {
   attribute int span;
   children (:col)*;
-  protected string $tagName = 'colgroup';
+  protected /*string*/ $tagName = 'colgroup';
 }

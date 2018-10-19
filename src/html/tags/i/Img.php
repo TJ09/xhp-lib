@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -20,5 +20,5 @@ class :img extends :xhp:html-singleton {
     Stringish usemap,
     int width;
   category %flow, %phrase;
-  protected string $tagName = 'img';
+  protected /*string*/ $tagName = 'img';
 }

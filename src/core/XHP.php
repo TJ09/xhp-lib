@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -9,41 +9,38 @@
  */
 
 abstract class :xhp implements XHPChild, JsonSerializable {
-  // Must be kept in sync with code generation for XHP
-  const string SPREAD_PREFIX = '...$';
-
-  public function __construct(
-    KeyedTraversable<string, mixed> $attributes,
-    Traversable<XHPChild> $children,
-  ): void {
-  }
-  abstract public function appendChild(mixed $child): this;
-  abstract public function prependChild(mixed $child): this;
-  abstract public function replaceChildren(...): this;
+  abstract public function __construct(
+    iterable/*<string, mixed>*/ $attributes,
+    iterable/*<XHPChild>*/ $children
+  );
+  abstract public function appendChild(/*mixed*/ $child)/*: this*/;
+  abstract public function prependChild(/*mixed*/ $child)/*: this*/;
+  abstract public function replaceChildren(/*...*/)/*: this*/;
   abstract public function getChildren(
-    ?string $selector = null,
-  ): Vector<XHPChild>;
+    ?string $selector = null
+  ): array/*<XHPChild>*/;
   abstract public function getFirstChild(?string $selector = null): ?XHPChild;
   abstract public function getLastChild(?string $selector = null): ?XHPChild;
-  abstract public function getAttribute(string $attr): mixed;
-  abstract public function getAttributes(): Map<string, mixed>;
-  abstract public function setAttribute(string $attr, mixed $val): this;
+  abstract public function getAttribute(string $attr)/*: mixed*/;
+  abstract public function getAttributes(): array/*<string, mixed>*/;
+  abstract public function setAttribute(string $attr, /*mixed*/ $val)/*: this*/;
   abstract public function setAttributes(
-    KeyedTraversable<string, mixed> $attrs,
-  ): this;
+    iterable/*<string, mixed>*/ $attrs
+  )/*: this*/;
   abstract public function isAttributeSet(string $attr): bool;
-  abstract public function removeAttribute(string $attr): this;
+  abstract public function removeAttribute(string $attr)/*: this*/;
   abstract public function categoryOf(string $cat): bool;
   abstract public function toString(): string;
-  /* HH_FIXME[1002] Return collections instead of arrays */
-  abstract protected function &__xhpCategoryDeclaration(): array<string, int>;
-  abstract protected function &__xhpChildrenDeclaration(): mixed;
+
+  // TODO: maybe add type hints at the extension level.
+  abstract protected function &__xhpCategoryDeclaration()/*: array*/;
+  abstract protected function &__xhpChildrenDeclaration()/*: mixed*/;
   protected static function &__xhpAttributeDeclaration(
-  ): array<string, array<int, mixed>> {
+  )/*: array*/ {
     return array();
   }
 
-  public ?string $source;
+  public /*?string*/ $source;
 
   /**
    * Enabling validation will give you stricter documents; you won't be able to
@@ -54,8 +51,8 @@ abstract class :xhp implements XHPChild, JsonSerializable {
    * production. You should still leave it on while developing new features,
    * though.
    */
-  private static bool $validateChildren = true;
-  private static bool $validateAttributes = false;
+  private static /*bool*/ $validateChildren = true;
+  private static /*bool*/ $validateAttributes = false;
 
   public static function disableChildValidation(): void {
     self::$validateChildren = false;
@@ -89,12 +86,15 @@ abstract class :xhp implements XHPChild, JsonSerializable {
     return $this->toString();
   }
 
-  final protected static function renderChild(XHPChild $child): string {
+  final protected static function renderChild(
+    // FIXME: See XHPChild declaration.
+    /*XHPChild*/ $child
+  ): string {
     if ($child instanceof :xhp) {
       return $child->toString();
     } else if ($child instanceof XHPUnsafeRenderable) {
       return $child->toHTMLString();
-    } else if ($child instanceof Traversable) {
+    } else if ($child instanceof iterable) {
       throw new XHPRenderArrayException('Can not render traversables!');
     } else {
       return htmlspecialchars((string)$child);
@@ -109,7 +109,7 @@ abstract class :xhp implements XHPChild, JsonSerializable {
     return str_replace(
       array('__', '_'),
       array(':', '-'),
-      preg_replace('#^xhp_#i', '', $class),
+      preg_replace('#^\\\?xhp_#i', '', $class)
     );
   }
 }

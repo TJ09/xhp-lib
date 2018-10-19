@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -10,5 +10,5 @@
 
 class :br extends :xhp:html-singleton {
   category %flow, %phrase;
-  protected string $tagName = 'br';
+  protected /*string*/ $tagName = 'br';
 }

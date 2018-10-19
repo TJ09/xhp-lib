@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -11,5 +11,5 @@
 class :h2 extends :xhp:html-element {
   category %flow;
   children (pcdata | %phrase)*;
-  protected string $tagName = 'h2';
+  protected /*string*/ $tagName = 'h2';
 }

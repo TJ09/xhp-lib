@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -19,5 +19,5 @@ class :link extends :xhp:html-singleton {
     Stringish sizes,
     Stringish type;
   category %metadata;
-  protected string $tagName = 'link';
+  protected /*string*/ $tagName = 'link';
 }

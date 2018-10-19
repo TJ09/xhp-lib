@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -16,8 +16,9 @@ class :script extends :xhp:raw-pcdata-element {
     bool defer,
     Stringish src,
     Stringish type,
+    Stringish integrity,
     // Legacy
     Stringish language;
   category %flow, %phrase, %metadata;
-  protected string $tagName = 'script';
+  protected /*string*/ $tagName = 'script';
 }

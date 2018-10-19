@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -14,5 +14,5 @@ class :option extends :xhp:pcdata-element {
     Stringish label,
     bool selected,
     Stringish value;
-  protected string $tagName = 'option';
+  protected /*string*/ $tagName = 'option';
 }

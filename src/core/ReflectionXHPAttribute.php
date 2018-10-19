@@ -1,39 +1,32 @@
-<?hh // strict
-/*
- *  Copyright (c) 2004-present, Facebook, Inc.
- *  All rights reserved.
- *
- *  This source code is licensed under the MIT license found in the
- *  LICENSE file in the root directory of this source tree.
- *
- */
-
-enum XHPAttributeType: int {
-  TYPE_STRING = 1;
-  TYPE_BOOL = 2;
-  TYPE_INTEGER = 3;
-  TYPE_ARRAY = 4;
-  TYPE_OBJECT = 5;
-  TYPE_VAR = 6;
-  TYPE_ENUM = 7;
-  TYPE_FLOAT = 8;
-  TYPE_UNSUPPORTED_LEGACY_CALLABLE = 9;
+<?php
+final class XHPAttributeType extends \HHto7\Runtime\Enum {
+  const TYPE_STRING = 1;
+  const TYPE_BOOL = 2;
+  const TYPE_INTEGER = 3;
+  const TYPE_ARRAY = 4;
+  const TYPE_OBJECT = 5;
+  const TYPE_VAR = 6;
+  const TYPE_ENUM = 7;
+  const TYPE_FLOAT = 8;
+  const TYPE_UNSUPPORTED_LEGACY_CALLABLE = 9;
 }
 
 class ReflectionXHPAttribute {
-  private XHPAttributeType $type;
+  private /*XHPAttributeType*/ $type;
   /*
    * OBJECT: string (class name)
    * ENUM: array<string> (enum values)
    * ARRAY: Array decl
    */
-  private mixed $extraType;
-  private mixed $defaultValue;
-  private bool $required;
+  private /*mixed*/ $extraType;
+  private /*mixed*/ $defaultValue;
+  private /*bool*/ $required;
 
-  private static ImmSet<string> $specialAttributes = ImmSet { 'data', 'aria' };
+  private static /*ImmSet<string>*/ $specialAttributes = [ 'data', 'aria' ];
+  private $name;
 
-  public function __construct(private string $name, array<int, mixed> $decl) {
+  public function __construct(string $name, array $decl) {
+    $this->name = $name;
     $this->type = XHPAttributeType::assert($decl[0]);
     $this->extraType = $decl[1];
     $this->defaultValue = $decl[2];
@@ -44,7 +37,7 @@ class ReflectionXHPAttribute {
     return $this->name;
   }
 
-  public function getValueType(): XHPAttributeType {
+  public function getValueType(): int {
     return $this->type;
   }
 
@@ -56,50 +49,50 @@ class ReflectionXHPAttribute {
     return $this->defaultValue !== null;
   }
 
-  public function getDefaultValue(): mixed {
+  public function getDefaultValue()/*: mixed*/ {
     return $this->defaultValue;
   }
 
-  <<__Memoize>>
+  /*<<__Memoize>>*/
   public function getValueClass(): string {
     $t = $this->getValueType();
     invariant(
       $this->getValueType() === XHPAttributeType::TYPE_OBJECT,
       'Tried to get value class for attribute %s of type %s - needed '.'OBJECT',
       $this->getName(),
-      XHPAttributeType::getNames()[$this->getValueType()],
+      XHPAttributeType::getNames()[$this->getValueType()]
     );
     $v = $this->extraType;
     invariant(
       is_string($v),
       'Class name for attribute %s is not a string',
-      $this->getName(),
+      $this->getName()
     );
     return $v;
   }
 
-  <<__Memoize>>
-  public function getEnumValues(): Set<string> {
+  /*<<__Memoize>>*/
+  public function getEnumValues(): iterable/*<string>*/ {
     $t = $this->getValueType();
     invariant(
       $this->getValueType() === XHPAttributeType::TYPE_ENUM,
       'Tried to get enum values for attribute %s of type %s - needed '.'ENUM',
       $this->getName(),
-      XHPAttributeType::getNames()[$this->getValueType()],
+      XHPAttributeType::getNames()[$this->getValueType()]
     );
     $v = $this->extraType;
     invariant(
       is_array($v),
       'Class name for attribute %s is not a string',
-      $this->getName(),
+      $this->getName()
     );
-    return new Set($v);
+    return $v;
   }
 
   /**
    * Returns true if the attribute is a data- or aria- attribute.
    */
-  <<__Memoize>>
+  /*<<__Memoize>>*/
   public static function IsSpecial(string $attr): bool {
     return strlen($attr) >= 6 &&
       $attr[4] === '-' &&
@@ -128,7 +121,13 @@ class ReflectionXHPAttribute {
         break;
       case XHPAttributeType::TYPE_ENUM:
         $out = 'enum {';
-        $out .= implode(', ', $this->getEnumValues()->map($x ==> "'".$x."'"));
+        $out .=
+          implode(', ',
+            array_map(
+              function($x) { return "'".$x."'"; },
+              $this->getEnumValues()
+            )
+          );
         $out .= '}';
         break;
       case XHPAttributeType::TYPE_FLOAT:

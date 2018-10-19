@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -13,5 +13,5 @@ class :optgroup extends :xhp:html-element {
     bool disabled,
     Stringish label;
   children (:option)*;
-  protected string $tagName = 'optgroup';
+  protected /*string*/ $tagName = 'optgroup';
 }

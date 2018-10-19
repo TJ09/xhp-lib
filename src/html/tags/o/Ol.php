@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -15,5 +15,5 @@ class :ol extends :xhp:html-element {
     enum {'1', 'a', 'A', 'i', 'I'} type;
   category %flow;
   children (:li)*;
-  protected string $tagName = 'ol';
+  protected /*string*/ $tagName = 'ol';
 }

@@ -1,12 +1,4 @@
-<?hh
-/*
- *  Copyright (c) 2004-present, Facebook, Inc.
- *  All rights reserved.
- *
- *  This source code is licensed under the MIT license found in the
- *  LICENSE file in the root directory of this source tree.
- *
- */
+<?php
 
 class :test:contexts extends :x:element {
   protected function render(): XHPRoot {
@@ -36,7 +28,7 @@ class XHPContextsTest extends PHPUnit_Framework_TestCase {
     $x->setContext('heading', 'herp');
     $this->assertSame(
       '<div><p>herp</p><div><p>herp</p></div></div>',
-      $x->toString(),
+      $x->toString()
     );
   }
 }

@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -20,5 +20,5 @@ class :audio extends :xhp:html-element {
     Stringish src;
   category %flow, %phrase, %embedded, %interactive;
   children (:source*, :track*, (pcdata | %flow)*);
-  protected string $tagName = 'audio';
+  protected /*string*/ $tagName = 'audio';
 }

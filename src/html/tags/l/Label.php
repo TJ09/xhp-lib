@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -15,5 +15,5 @@ class :label extends :xhp:html-element {
   category %flow, %phrase, %interactive;
   // may not contain label
   children (pcdata | %phrase)*;
-  protected string $tagName = 'label';
+  protected /*string*/ $tagName = 'label';
 }

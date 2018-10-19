@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -12,5 +12,5 @@ class :param extends :xhp:pcdata-element {
   attribute
     Stringish name,
     Stringish value;
-  protected string $tagName = 'param';
+  protected /*string*/ $tagName = 'param';
 }

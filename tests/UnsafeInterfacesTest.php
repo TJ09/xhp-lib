@@ -1,4 +1,4 @@
-<?hh
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -12,10 +12,12 @@
 // practice; please don't create/use classes as unsafe as these examples.
 
 class ExampleUnsafeRenderable implements XHPUnsafeRenderable {
-  public function __construct(public string $htmlString) {
+	public $htmlString;
+  public function __construct(string $htmlString) {
+		$this->htmlString = $htmlString;
   }
 
-  public function toHTMLString() {
+  public function toHTMLString(): string {
     return $this->htmlString;
   }
 }
@@ -30,7 +32,7 @@ class UnsafeInterfacesTest extends PHPUnit_Framework_TestCase {
     $xhp = <div>{$x}</div>;
     $this->assertEquals(
       '<div><script>lollerskates</script></div>',
-      $xhp->toString(),
+      $xhp->toString()
     );
   }
 
@@ -38,9 +40,9 @@ class UnsafeInterfacesTest extends PHPUnit_Framework_TestCase {
    * @expectedException XHPInvalidChildrenException
    */
   public function testInvalidChild() {
-    $x = new ExampleUnsafeRenderable('foo');
-    $xhp = <html>{$x}<body /></html>;
-    $xhp->toString(); // validate, throw exception
+      $x = new ExampleUnsafeRenderable('foo');
+      $xhp = <html>{$x}<body /></html>;
+      $xhp->toString(); // validate, throw exception
   }
 
   public function testAlwaysValidChild() {

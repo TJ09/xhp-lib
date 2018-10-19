@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -11,5 +11,5 @@
 class :caption extends :xhp:html-element {
   // Should not contain :table
   children (pcdata | %flow)*;
-  protected string $tagName = 'caption';
+  protected /*string*/ $tagName = 'caption';
 }

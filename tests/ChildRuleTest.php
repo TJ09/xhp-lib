@@ -1,4 +1,4 @@
-<?hh
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -106,12 +106,12 @@ class :test:needs-comma-category extends :x:element {
 
 class ChildRuleTest extends PHPUnit_Framework_TestCase {
   public function testNoChild(): void {
-    $elems = Vector {
+    $elems = [
       <test:no-children />,
       <test:any-children />,
       <test:optional-child />,
       <test:any-number-of-child />,
-    };
+    ];
     foreach ($elems as $elem) {
       $this->assertSame('<div></div>', (string)$elem);
     }
@@ -121,12 +121,12 @@ class ChildRuleTest extends PHPUnit_Framework_TestCase {
    * @expectedException XHPInvalidChildrenException
    */
   public function testUnexpectedChild(): void {
-    $x = <test:no-children><div /></test:no-children>;
-    $x->toString();
+      $x = <test:no-children><div /></test:no-children>;
+      $x->toString();
   }
 
   public function testSingleChild(): void {
-    $elems = Vector {
+    $elems = [
       <test:any-children />,
       <test:single-child />,
       <test:optional-child />,
@@ -135,7 +135,7 @@ class ChildRuleTest extends PHPUnit_Framework_TestCase {
       <test:either-of-two-children />,
       <test:nested-rule />,
       <test:category-child />,
-    };
+    ];
     foreach ($elems as $elem) {
       $elem->appendChild(<div>Foo</div>);
       $this->assertSame('<div></div>', (string)$elem);
@@ -147,7 +147,7 @@ class ChildRuleTest extends PHPUnit_Framework_TestCase {
    */
   public function testToString(
     :x:composable-element $elem,
-    string $expected,
+    string $expected
   ): void {
     $this->assertSame($expected, $elem->__getChildrenDeclaration());
   }
@@ -169,13 +169,13 @@ class ChildRuleTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testExpectedChild(): void {
-    $elems = Vector {
+    $elems = [
       <test:single-child />,
       <test:at-least-one-child />,
       <test:either-of-two-children />,
       <test:nested-rule />,
       <test:pcdata-child />,
-    };
+    ];
     foreach ($elems as $elem) {
       $exception = null;
       try {
@@ -188,14 +188,14 @@ class ChildRuleTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testTooManyChildren(): void {
-    $elems = Vector {
+    $elems = [
       <test:single-child />,
       <test:optional-child />,
       <test:two-children />,
       <test:either-of-two-children />,
       <test:nested-rule />,
       <test:category-child />,
-    };
+    ];
     foreach ($elems as $elem) {
       $exception = null;
       $elem->appendChild(<x:frag><div /><div /><div /></x:frag>);
@@ -209,7 +209,7 @@ class ChildRuleTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testIncorrectChild(): void {
-    $elems = Vector {
+    $elems = [
       <test:single-child />,
       <test:optional-child />,
       <test:any-number-of-child />,
@@ -217,7 +217,7 @@ class ChildRuleTest extends PHPUnit_Framework_TestCase {
       <test:either-of-two-children />,
       <test:nested-rule />,
       <test:category-child />,
-    };
+    ];
     foreach ($elems as $elem) {
       $exception = null;
       $elem->appendChild(<thead />);
@@ -231,11 +231,11 @@ class ChildRuleTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testTwoChildren(): void {
-    $elems = Vector {
+    $elems = [
       <test:any-number-of-child />,
       <test:at-least-one-child />,
       <test:two-children />,
-    };
+    ];
     foreach ($elems as $elem) {
       $elem->appendChild(<x:frag><div /><div /></x:frag>);
       $this->assertSame('<div></div>', $elem->toString());
@@ -244,7 +244,7 @@ class ChildRuleTest extends PHPUnit_Framework_TestCase {
 
   public function testThreeChildren(): void {
     $elems =
-      Vector { <test:any-number-of-child />, <test:at-least-one-child /> };
+      [ <test:any-number-of-child />, <test:at-least-one-child /> ];
     foreach ($elems as $elem) {
       $elem->appendChild(<x:frag><div /><div /><div /></x:frag>);
       $this->assertSame('<div></div>', $elem->toString());
@@ -289,7 +289,7 @@ class ChildRuleTest extends PHPUnit_Framework_TestCase {
    * @expectedException XHPInvalidChildrenException
    */
   public function testNested(): void {
-    $x = <div><test:at-least-one-child /></div>;
-    $x->toString();
+      $x = <div><test:at-least-one-child /></div>;
+      $x->toString();
   }
 }

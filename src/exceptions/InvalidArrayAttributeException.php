@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -13,7 +13,7 @@ class XHPInvalidArrayAttributeException extends XHPException {
     :xhp $that,
     string $type,
     string $attr,
-    mixed $val,
+/*mixed*/ $val
   ) {
     if (is_object($val)) {
       $val_type = get_class($val);
@@ -26,7 +26,7 @@ class XHPInvalidArrayAttributeException extends XHPException {
       :xhp::class2element(get_class($that)).
       "`, expected ".
       "array<`$type`>.\n\n".
-      $that->source,
+      $that->source
     );
   }
 }

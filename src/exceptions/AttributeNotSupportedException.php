@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -22,7 +22,7 @@ class XHPAttributeNotSupportedException extends XHPException {
       "\n\n".
       'Please check for typos in your attribute. If you are creating a new '.
       'attribute on this element define it with the "attribute" keyword'.
-      "\n\n",
+      "\n\n"
     );
   }
 }

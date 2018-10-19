@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -14,5 +14,5 @@ class :ins extends :xhp:html-element {
     Stringish datetime;
   category %flow, %phrase;
   children (pcdata | %flow)*;
-  protected string $tagName = 'ins';
+  protected /*string*/ $tagName = 'ins';
 }

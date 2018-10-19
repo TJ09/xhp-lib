@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -15,5 +15,5 @@ class :output extends :xhp:html-element {
     Stringish name;
   category %flow, %phrase;
   children (pcdata | %phrase)*;
-  protected string $tagName = 'output';
+  protected /*string*/ $tagName = 'output';
 }

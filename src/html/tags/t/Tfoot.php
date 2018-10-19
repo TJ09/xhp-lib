@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -10,5 +10,5 @@
 
 class :tfoot extends :xhp:html-element {
   children (:tr)*;
-  protected string $tagName = 'tfoot';
+  protected /*string*/ $tagName = 'tfoot';
 }

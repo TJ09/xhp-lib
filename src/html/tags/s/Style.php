@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -14,5 +14,5 @@ class :style extends :xhp:raw-pcdata-element {
     bool scoped,
     Stringish type;
   category %flow, %metadata;
-  protected string $tagName = 'style';
+  protected /*string*/ $tagName = 'style';
 }

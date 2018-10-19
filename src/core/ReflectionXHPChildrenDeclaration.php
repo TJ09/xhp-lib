@@ -1,66 +1,51 @@
-<?hh // strict
-/*
- *  Copyright (c) 2004-present, Facebook, Inc.
- *  All rights reserved.
- *
- *  This source code is licensed under the MIT license found in the
- *  LICENSE file in the root directory of this source tree.
- *
- */
-
-use type Facebook\TypeAssert\IncorrectTypeException;
-use namespace Facebook\TypeSpec;
-
-enum XHPChildrenDeclarationType: int {
-  NO_CHILDREN = 0;
-  ANY_CHILDREN = 1;
-  EXPRESSION = ~0;
+<?php
+final class XHPChildrenDeclarationType extends \HHto7\Runtime\Enum {
+  const NO_CHILDREN = 0;
+  const ANY_CHILDREN = 1;
+  const EXPRESSION = -1;
 }
-
-enum XHPChildrenExpressionType: int {
-  SINGLE = 0; // :thing
-  ANY_NUMBER = 1; // :thing*
-  ZERO_OR_ONE = 2; // :thing?
-  ONE_OR_MORE = 3; // :thing+
-  SUB_EXPR_SEQUENCE = 4; // (expr, expr)
-  SUB_EXPR_DISJUNCTION = 5; // (expr | expr)
+final class XHPChildrenExpressionType extends \HHto7\Runtime\Enum {
+  const SINGLE = 0; // :thing
+  const ANY_NUMBER = 1; // :thing*
+  const ZERO_OR_ONE = 2; // :thing?
+  const ONE_OR_MORE = 3; // :thing+
+  const SUB_EXPR_SEQUENCE = 4; // (expr, expr)
+  const SUB_EXPR_DISJUNCTION = 5; // (expr | expr)
 }
-
-enum XHPChildrenConstraintType: int {
-  ANY = 1;
-  PCDATA = 2;
-  ELEMENT = 3;
-  CATEGORY = 4;
-  SUB_EXPR = 5;
+final class XHPChildrenConstraintType extends \HHto7\Runtime\Enum {
+  const ANY = 1;
+  const PCDATA = 2;
+  const ELEMENT = 3;
+  const CATEGORY = 4;
+  const SUB_EXPR = 5;
 }
 
 class ReflectionXHPChildrenDeclaration {
-  public function __construct(private string $context, private mixed $data) {
+  private $context;
+  private $data;
+  public function __construct(string $context, /*mixed*/ $data) {
+    $this->context = $context;
+    $this->data = $data;
   }
 
-  <<__Memoize>>
-  public function getType(): XHPChildrenDeclarationType {
+  /*<<__Memoize>>*/
+  public function getType(): int {
     if (is_array($this->data)) {
       return XHPChildrenDeclarationType::EXPRESSION;
     }
     return XHPChildrenDeclarationType::assert($this->data);
   }
 
-  <<__Memoize>>
+  /*<<__Memoize>>*/
   public function getExpression(): ReflectionXHPChildrenExpression {
-    try {
-      $data = TypeSpec\dict_like_array(TypeSpec\int(), TypeSpec\mixed())
-        ->assertType($this->data);
-      return new ReflectionXHPChildrenExpression($this->context, $data);
-    } catch (IncorrectTypeException $_) {
-      // handled below
-    }
-
-    throw new Exception (
-      "Tried to get child expression for XHP class ".
-      :xhp::class2element(get_class($this->context)).
-      ", but it does not have an expressions."
+    $data = $this->data;
+    invariant(
+      is_array($data),
+      "Tried to get child expression for XHP class %s, but it does not ".
+      "have an expression.",
+      :xhp::class2element($this->context)
     );
+    return new ReflectionXHPChildrenExpression($this->context, $data);
   }
 
   public function __toString(): string {
@@ -75,90 +60,85 @@ class ReflectionXHPChildrenDeclaration {
 }
 
 class ReflectionXHPChildrenExpression {
+  private $context;
+  private $data;
   public function __construct(
-    private string $context,
-    private array<int, mixed> $data,
+    string $context,
+    array $data
   ) {
+    $this->context = $context;
+    $this->data = $data;
   }
 
-  <<__Memoize>>
-  public function getType(): XHPChildrenExpressionType {
+  /*<<__Memoize>>*/
+  public function getType(): int {
     return XHPChildrenExpressionType::assert($this->data[0]);
   }
 
-  <<__Memoize>>
+  /*<<__Memoize>>*/
   public function getSubExpressions(
-  ): (ReflectionXHPChildrenExpression, ReflectionXHPChildrenExpression) {
+  ): array/*(ReflectionXHPChildrenExpression, ReflectionXHPChildrenExpression)*/ {
     $type = $this->getType();
     invariant(
       $type === XHPChildrenExpressionType::SUB_EXPR_SEQUENCE ||
       $type === XHPChildrenExpressionType::SUB_EXPR_DISJUNCTION,
       'Only disjunctions and sequences have two sub-expressions - in %s',
-      :xhp::class2element(get_class($this->context)),
+      :xhp::class2element($this->context)
     );
-    try {
-      $sub_expr_1 = TypeSpec\dict_like_array(TypeSpec\int(), TypeSpec\mixed())
-        ->assertType($this->data[1]);
-      $sub_expr_2 = TypeSpec\dict_like_array(TypeSpec\int(), TypeSpec\mixed())
-        ->assertType($this->data[2]);
-      return tuple(
-        new ReflectionXHPChildrenExpression($this->context, $sub_expr_1),
-        new ReflectionXHPChildrenExpression($this->context, $sub_expr_2),
-      );
-    } catch (IncorrectTypeException $_) {
-      // handled below
-    }
-
-    throw new Exception('Data is not subexpressions - in '.$this->context);
+    $sub_expr_1 = $this->data[1];
+    $sub_expr_2 = $this->data[2];
+    invariant(
+      is_array($sub_expr_1) && is_array($sub_expr_2),
+      'Data is not subexpressions - in %s',
+      $this->context
+    );
+    return array(
+      new ReflectionXHPChildrenExpression($this->context, $sub_expr_1),
+      new ReflectionXHPChildrenExpression($this->context, $sub_expr_2),
+    );
   }
 
-  <<__Memoize>>
-  public function getConstraintType(): XHPChildrenConstraintType {
+  /*<<__Memoize>>*/
+  public function getConstraintType(): int {
     $type = $this->getType();
     invariant(
       $type !== XHPChildrenExpressionType::SUB_EXPR_SEQUENCE &&
       $type !== XHPChildrenExpressionType::SUB_EXPR_DISJUNCTION,
       'Disjunctions and sequences do not have a constraint type - in %s',
-      :xhp::class2element(get_class($this->context)),
+      :xhp::class2element($this->context)
     );
     return XHPChildrenConstraintType::assert($this->data[1]);
   }
 
-  <<__Memoize>>
+  /*<<__Memoize>>*/
   public function getConstraintString(): string {
     $type = $this->getConstraintType();
     invariant(
       $type === XHPChildrenConstraintType::ELEMENT ||
       $type === XHPChildrenConstraintType::CATEGORY,
       'Only element and category constraints have string data - in %s',
-      :xhp::class2element(get_class($this->context)),
+      :xhp::class2element($this->context)
     );
     $data = $this->data[2];
     invariant(is_string($data), 'Expected string data');
     return $data;
   }
 
-  <<__Memoize>>
+  /*<<__Memoize>>*/
   public function getSubExpression(): ReflectionXHPChildrenExpression {
     invariant(
       $this->getConstraintType() === XHPChildrenConstraintType::SUB_EXPR,
       'Only expression constraints have a single sub-expression - in %s',
-      $this->context,
+      $this->context
     );
     $data = $this->data[2];
-    try {
-      $data = TypeSpec\dict_like_array(TypeSpec\int(), TypeSpec\mixed())
-        ->assertType($this->data[2]);
-      return new ReflectionXHPChildrenExpression($this->context, $data);
-    } catch (IncorrectTypeException $_) {
-      // handled below
-    }
-
-    throw new Exception (
-      'Expected a sub-expression, got a '.
-      is_object($data) ? get_class($data) : gettype($data).
-      ' - in '. $this->context
+    invariant(
+      is_array($data),
+      'Expected a sub-expression, got a %s - in %s',
+      is_object($data) ? get_class($data) : gettype($data),
+      $this->context
     );
+    return new ReflectionXHPChildrenExpression($this->context, $data);
   }
 
   public function __toString(): string {

@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -12,5 +12,5 @@ class :time extends :xhp:html-element {
   attribute Stringish datetime;
   category %flow, %phrase;
   children (pcdata | %phrase)*;
-  protected string $tagName = 'time';
+  protected /*string*/ $tagName = 'time';
 }

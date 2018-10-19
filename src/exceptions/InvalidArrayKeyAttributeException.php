@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -13,7 +13,7 @@ class XHPInvalidArrayKeyAttributeException extends XHPException {
     :xhp $that,
     string $type,
     string $attr,
-    string $val_type,
+    string $val_type
   ) {
     parent::__construct(
       "Invalid key in attribute `$attr` of type array<$val_type => ?> supplied".
@@ -21,7 +21,7 @@ class XHPInvalidArrayKeyAttributeException extends XHPException {
       :xhp::class2element(get_class($that)).
       "`, expected ".
       "array<$type => ?>.\n\n".
-      $that->source,
+      $that->source
     );
   }
 }

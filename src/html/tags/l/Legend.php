@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -10,5 +10,5 @@
 
 class :legend extends :xhp:html-element {
   children (pcdata | %phrase)*;
-  protected string $tagName = 'legend';
+  protected /*string*/ $tagName = 'legend';
 }

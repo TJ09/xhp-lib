@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -15,5 +15,5 @@ class :canvas extends :xhp:html-element {
   category %flow, %phrase, %embedded;
   // Should not contain :table
   children (pcdata | %flow)*;
-  protected string $tagName = 'canvas';
+  protected /*string*/ $tagName = 'canvas';
 }

@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -22,5 +22,5 @@ class :a extends :xhp:html-element {
   category %flow, %phrase, %interactive;
   // Should not contain %interactive
   children (pcdata | %flow)*;
-  protected string $tagName = 'a';
+  protected /*string*/ $tagName = 'a';
 }

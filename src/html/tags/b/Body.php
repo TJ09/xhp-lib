@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -23,5 +23,5 @@ class :body extends :xhp:html-element {
     Stringish onstorage,
     Stringish onunload;
   children (pcdata | %flow)*;
-  protected string $tagName = 'body';
+  protected /*string*/ $tagName = 'body';
 }

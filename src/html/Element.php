@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -109,7 +109,7 @@ abstract class :xhp:html-element extends :x:primitive {
     Stringish onvolumechange,
     Stringish onwaiting;
 
-  protected string $tagName = '';
+  protected /*string*/ $tagName = '';
 
   protected final function renderBaseAttrs(): string {
     $buf = '<'.$this->tagName;
@@ -121,7 +121,7 @@ abstract class :xhp:html-element extends :x:primitive {
           $buf .= ' '.
             htmlspecialchars($key).
             '="'.
-            htmlspecialchars($val, ENT_COMPAT).
+            htmlspecialchars((string)$val, ENT_COMPAT).
             '"';
         }
       }

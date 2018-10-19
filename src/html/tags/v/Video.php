@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -23,5 +23,5 @@ class :video extends :xhp:html-element {
     int width;
   category %flow, %phrase, %embedded, %interactive;
   children (:source*, :track*, (pcdata | %flow)*);
-  protected string $tagName = 'video';
+  protected /*string*/ $tagName = 'video';
 }

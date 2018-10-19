@@ -1,4 +1,4 @@
-<?hh
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -43,7 +43,7 @@ class BasicsTest extends PHPUnit_Framework_TestCase {
     $x = 'herp';
     $y = 'derp';
     $frag = <x:frag>{$x}{$y}</x:frag>;
-    $this->assertEquals(2, $frag->getChildren()->count());
+    $this->assertEquals(2, count($frag->getChildren()));
     $xhp = <div>{$frag}</div>;
     $this->assertEquals('<div>herpderp</div>', $xhp->toString());
   }

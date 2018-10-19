@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -20,5 +20,5 @@ class :meta extends :xhp:html-singleton {
     Stringish property;
   // If itemprop is present, this element is allowed within the <body>.
   category %metadata, %flow, %phrase;
-  protected string $tagName = 'meta';
+  protected /*string*/ $tagName = 'meta';
 }

@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -8,16 +8,15 @@
  *
  */
 
-
-trait XHPBaseHTMLHelpers implements HasXHPBaseHTMLHelpers {
-  require extends :x:composable-element;
+trait XHPBaseHTMLHelpers /*implements HasXHPBaseHTMLHelpers*/ {
+  // require extends :x:composable-element;
 
   /*
    * Appends a string to the "class" attribute (space separated).
    */
-  public function addClass(string $class): this {
+  public function addClass(string $class)/*: this*/ {
     try {
-      $current_class = /* UNSAFE_EXPR */ $this->:class;
+      $current_class = $this->:class;
       return $this->setAttribute('class', trim($current_class.' '.$class));
     } catch (XHPInvalidAttributeException $error) {
       throw new XHPException(
@@ -25,7 +24,7 @@ trait XHPBaseHTMLHelpers implements HasXHPBaseHTMLHelpers {
         :xhp::class2element(static::class).
         ' element, but it does not support '.
         'the "class" attribute. The best way to do this is to inherit '.
-        'the HTML attributes from the element your component will render into.',
+        'the HTML attributes from the element your component will render into.'
       );
     }
   }
@@ -33,7 +32,7 @@ trait XHPBaseHTMLHelpers implements HasXHPBaseHTMLHelpers {
   /*
    * Conditionally adds a class to the "class" attribute.
    */
-  public function conditionClass(bool $cond, string $class): this {
+  public function conditionClass(bool $cond, string $class)/*: this*/ {
     return $cond ? $this->addClass($class) : $this;
   }
 
@@ -42,7 +41,7 @@ trait XHPBaseHTMLHelpers implements HasXHPBaseHTMLHelpers {
    * will only be generated if one has not already been set.
    */
   public function requireUniqueID(): string {
-    $id = /* UNSAFE_EXPR */ $this->:id;
+    $id = $this->:id;
     if ($id === null || $id === '') {
       try {
         $this->setAttribute('id', $id = bin2hex(random_bytes(5)));
@@ -53,7 +52,7 @@ trait XHPBaseHTMLHelpers implements HasXHPBaseHTMLHelpers {
           ' element, but it does not '.
           'support the "id" attribute. The best way to do this is to inherit '.
           'the HTML attributes from the element your component will render '.
-          'into.',
+          'into.'
         );
       }
     }

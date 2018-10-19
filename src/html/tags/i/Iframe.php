@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -19,5 +19,5 @@ class :iframe extends :xhp:pcdata-element {
     Stringish srcdoc,
     int width;
   category %flow, %phrase, %embedded, %interactive;
-  protected string $tagName = 'iframe';
+  protected /*string*/ $tagName = 'iframe';
 }

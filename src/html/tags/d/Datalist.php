@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -11,5 +11,5 @@
 class :datalist extends :xhp:html-element {
   category %flow, %phrase;
   children (%phrase+ | :option*);
-  protected string $tagName = 'datalist';
+  protected /*string*/ $tagName = 'datalist';
 }

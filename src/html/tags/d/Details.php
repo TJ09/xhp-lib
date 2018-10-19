@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -12,5 +12,5 @@ class :details extends :xhp:html-element {
   attribute bool open;
   category %flow, %phrase, %interactive;
   children (:summary, %flow+);
-  protected string $tagName = 'details';
+  protected /*string*/ $tagName = 'details';
 }

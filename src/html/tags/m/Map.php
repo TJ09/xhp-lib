@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -12,5 +12,5 @@ class :map extends :xhp:html-element {
   attribute Stringish name;
   category %flow, %phrase;
   children (pcdata | %flow)*;
-  protected string $tagName = 'map';
+  protected /*string*/ $tagName = 'map';
 }

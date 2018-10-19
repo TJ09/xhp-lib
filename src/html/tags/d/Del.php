@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -15,5 +15,5 @@ class :del extends :xhp:html-element {
   category %flow, %phrase;
   // transparent
   children (pcdata | %flow)*;
-  protected string $tagName = 'del';
+  protected /*string*/ $tagName = 'del';
 }

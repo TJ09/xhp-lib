@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -11,5 +11,5 @@
 class :dl extends :xhp:html-element {
   category %flow;
   children (:dt+, :dd+)*;
-  protected string $tagName = 'dl';
+  protected /*string*/ $tagName = 'dl';
 }

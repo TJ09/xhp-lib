@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -14,8 +14,8 @@
  * invoked by :x:element.
  */
 interface XHPHasTransferAttributes {
-  require extends :x:element;
+  // require extends :x:element;
   public function transferAttributesToRenderedRoot(
-    :x:composable-element $root,
+    :x:composable-element $root
   ): void;
 }

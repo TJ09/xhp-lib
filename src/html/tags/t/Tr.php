@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -10,5 +10,5 @@
 
 class :tr extends :xhp:html-element {
   children (:th | :td)*;
-  protected string $tagName = 'tr';
+  protected /*string*/ $tagName = 'tr';
 }

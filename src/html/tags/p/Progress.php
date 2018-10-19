@@ -1,4 +1,4 @@
-<?hh // strict
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -15,5 +15,5 @@ class :progress extends :xhp:html-element {
   category %flow, %phrase;
   // Should not contain :progress
   children (pcdata | %phrase)*;
-  protected string $tagName = 'progress';
+  protected /*string*/ $tagName = 'progress';
 }

@@ -1,4 +1,4 @@
-<?hh
+<?php
 /*
  *  Copyright (c) 2004-present, Facebook, Inc.
  *  All rights reserved.
@@ -9,11 +9,13 @@
  */
 
 class ReflectionXHPClass {
-  public function __construct(private string $className) {
+  private $className;
+  public function __construct(string $className) {
+    $this->className = $className;
     invariant(
       class_exists($this->className),
       'Invalid class name: %s',
-      $this->className,
+      $this->className
     );
   }
 
@@ -37,20 +39,20 @@ class ReflectionXHPClass {
   public function getAttribute(string $name): ReflectionXHPAttribute {
     $map = $this->getAttributes();
     invariant(
-      $map->containsKey($name),
+      isset($map[$name]),
       'Tried to get attribute %s for XHP element %s, which does not exist',
       $name,
-      $this->getElementName(),
+      $this->getElementName()
     );
     return $map[$name];
   }
 
-  public function getAttributes(): Map<string, ReflectionXHPAttribute> {
+  public function getAttributes(): iterable/*<string, ReflectionXHPAttribute>*/ {
     $class = $this->getClassName();
     return $class::__xhpReflectionAttributes();
   }
 
-  public function getCategories(): Set<string> {
+  public function getCategories(): iterable/*<string>*/ {
     $class = $this->getClassName();
     return $class::__xhpReflectionCategoryDeclaration();
   }
