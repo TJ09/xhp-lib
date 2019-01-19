@@ -19,8 +19,8 @@ abstract class :xhp implements XHPChild, JsonSerializable {
   abstract public function getChildren(
     ?string $selector = null
   ): array/*<XHPChild>*/;
-  abstract public function getFirstChild(?string $selector = null): ?XHPChild;
-  abstract public function getLastChild(?string $selector = null): ?XHPChild;
+  abstract public function getFirstChild(?string $selector = null)/*: ?XHPChild*/;
+  abstract public function getLastChild(?string $selector = null)/*: ?XHPChild*/;
   abstract public function getAttribute(string $attr)/*: mixed*/;
   abstract public function getAttributes(): array/*<string, mixed>*/;
   abstract public function setAttribute(string $attr, /*mixed*/ $val)/*: this*/;

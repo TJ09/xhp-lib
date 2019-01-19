@@ -8,6 +8,6 @@
  *
  */
 
-interface XHPRoot extends XHPChild {
+interface XHPRoot /*extends XHPChild*/ {
   // require extends :x:composable-element;
 }
