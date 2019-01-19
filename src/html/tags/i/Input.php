@@ -35,7 +35,7 @@ class :input extends :xhp:html-singleton {
       'numeric',
       'tel',
       'url',
-      'verbatim',
+      'verbatim'
     } inputmode,
     string list,
     string max,
@@ -74,10 +74,10 @@ class :input extends :xhp:html-singleton {
       'submit',
       'image',
       'reset',
-      'button',
+      'button'
     } type,
     string value,
     int width;
   category %flow, %phrase, %interactive;
-  protected string $tagName = 'input';
+  protected $tagName = 'input';
 }

@@ -24,10 +24,10 @@ class :area extends :xhp:html-singleton {
       'poly',
       'polygon',
       'rect',
-      'rectangle',
+      'rectangle'
     } shape,
     string target,
     string type;
   category %flow, %phrase;
-  protected string $tagName = 'area';
+  protected $tagName = 'area';
 }
