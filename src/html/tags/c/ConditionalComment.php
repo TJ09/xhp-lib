@@ -13,7 +13,7 @@
  * the conditional statement.
  */
 class :x:conditional-comment extends :x:primitive {
-  attribute Stringish if @required;
+  attribute string if @required;
   children (pcdata | :xhp)*;
 
   protected function stringify(): string {
