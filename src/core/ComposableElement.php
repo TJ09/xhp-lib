@@ -279,7 +279,7 @@ abstract class :x:composable-element extends :xhp {
     if (!isset($cache[$class])) {
       $cache[$class] = new ReflectionXHPChildrenDeclaration(
         :xhp::class2element($class),
-        static::__xhpChildrenDeclaration()
+        self::emptyInstance()->__xhpChildrenDeclaration()
       );
     }
     return $cache[$class];
@@ -288,7 +288,13 @@ abstract class :x:composable-element extends :xhp {
   final public static function __xhpReflectionCategoryDeclaration(
   ): array {
     return
-      array_keys(static::__xhpCategoryDeclaration());
+      array_keys(self::emptyInstance()->__xhpCategoryDeclaration());
+  }
+
+  // Work-around to call methods that should be static without a real
+  // instance.
+  private static function emptyInstance() {
+    return (new ReflectionClass(static::class))->newInstanceWithoutConstructor();
   }
 
   final public function getAttributes(): array {
