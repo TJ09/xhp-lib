@@ -94,7 +94,7 @@ abstract class :xhp implements XHPChild, JsonSerializable {
       return $child->toString();
     } else if ($child instanceof XHPUnsafeRenderable) {
       return $child->toHTMLString();
-    } else if ($child instanceof iterable) {
+    } else if ($child instanceof iterable || is_array($child)) {
       throw new XHPRenderArrayException('Can not render traversables!');
     } else {
       return htmlspecialchars((string)$child);

@@ -85,7 +85,7 @@ abstract class :x:composable-element extends :xhp {
    * @param $child     single child or array of children
    */
   final public function prependChild(/*mixed*/ $child)/*: this*/ {
-    if ($child instanceof Traversable || is_array($child)) {
+    if (is_array($child) || $child instanceof Traversable) {
       foreach (array_reverse($child) as $c) {
         $this->prependChild($c);
       }
@@ -113,7 +113,7 @@ abstract class :x:composable-element extends :xhp {
           foreach ($xhp->children as $child) {
             $new_children[] = $child;
           }
-        } else if (!($xhp instanceof Traversable)) {
+        } else if (!is_array($xhp) && !($xhp instanceof Traversable)) {
           $new_children[] = $xhp;
         } else {
           foreach ($xhp as $element) {
