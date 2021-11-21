@@ -35,7 +35,7 @@ class AttributesCoercionModeTest extends PHPUnit\Framework\TestCase {
 
   public function tearDown(): void {
     $mode = $this->coercionMode;
-    invariant($mode !== null, 'did not save coercion mode');
+    assert($mode !== null, 'did not save coercion mode');
     XHPAttributeCoercion::SetMode($mode);
     error_reporting($this->errorReporting);
     :xhp::disableAttributeValidation();

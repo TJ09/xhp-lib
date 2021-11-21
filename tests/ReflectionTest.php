@@ -29,27 +29,27 @@ class ReflectionTest extends PHPUnit\Framework\TestCase {
   }
 
   public function testClassName(): void {
-    $this->assertSame(:test:for-reflection::class, nullsafe($this->rxc)->getClassName());
+    $this->assertSame(:test:for-reflection::class, $this->rxc->getClassName());
   }
 
   public function testElementName(): void {
-    $this->assertSame('test:for-reflection', nullsafe($this->rxc)->getElementName());
+    $this->assertSame('test:for-reflection', $this->rxc->getElementName());
   }
 
   public function testReflectionClass(): void {
-    $rc = nullsafe($this->rxc)->getReflectionClass();
+    $rc = $this->rxc->getReflectionClass();
     $this->assertInstanceOf(ReflectionClass::class, $rc);
-    $this->assertSame(:test:for-reflection::class, nullsafe($rc)->getName());
+    $this->assertSame(:test:for-reflection::class, $rc->getName());
   }
 
   public function testGetChildren(): void {
-    $children = nullsafe($this->rxc)->getChildren();
+    $children = $this->rxc->getChildren();
     $this->assertInstanceOf(ReflectionXHPChildrenDeclaration::class, $children);
     $this->assertSame('(:div+,(:code,:a)?)', (string)$children);
   }
 
   public function testGetAttributes(): void {
-    $attrs = nullsafe($this->rxc)->getAttributes();
+    $attrs = $this->rxc->getAttributes();
     $this->assertNotEmpty($attrs);
     $this->assertEquals(
       [
@@ -65,7 +65,7 @@ class ReflectionTest extends PHPUnit\Framework\TestCase {
   }
 
   public function testGetCategories(): void {
-    $categories = nullsafe($this->rxc)->getCategories();
+    $categories = $this->rxc->getCategories();
     $this->assertEquals([ 'herp', 'derp' ], $categories);
   }
 }

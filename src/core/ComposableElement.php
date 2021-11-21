@@ -390,7 +390,7 @@ abstract class :x:composable-element extends :xhp {
    * @return mixed          The context value or $default
    */
   final public function getContext(string $key, /*mixed*/ $default = null)/*: mixed*/ {
-    return idx($this->context, $key, $default);
+    return $this->context[$key] ?? $default;
   }
 
   /**
@@ -554,7 +554,11 @@ abstract class :x:composable-element extends :xhp {
         if ($val instanceof $class) {
           break;
         }
-        if (enum_exists($class) && $class::isValid($val)) {
+        if (
+          function_exists('enum_exists') &&
+          enum_exists($class) &&
+          $class::isValid($val)
+        ) {
           break;
         }
         // Things that are a valid array key without any coercion

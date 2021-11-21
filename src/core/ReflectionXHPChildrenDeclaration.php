@@ -1,10 +1,10 @@
 <?php
-final class XHPChildrenDeclarationType extends \HHto7\Runtime\Enum {
+final class XHPChildrenDeclarationType extends XHPInternalEnumish {
   const NO_CHILDREN = 0;
   const ANY_CHILDREN = 1;
   const EXPRESSION = -1;
 }
-final class XHPChildrenExpressionType extends \HHto7\Runtime\Enum {
+final class XHPChildrenExpressionType extends XHPInternalEnumish {
   const SINGLE = 0; // :thing
   const ANY_NUMBER = 1; // :thing*
   const ZERO_OR_ONE = 2; // :thing?
@@ -12,7 +12,7 @@ final class XHPChildrenExpressionType extends \HHto7\Runtime\Enum {
   const SUB_EXPR_SEQUENCE = 4; // (expr, expr)
   const SUB_EXPR_DISJUNCTION = 5; // (expr | expr)
 }
-final class XHPChildrenConstraintType extends \HHto7\Runtime\Enum {
+final class XHPChildrenConstraintType extends XHPInternalEnumish {
   const ANY = 1;
   const PCDATA = 2;
   const ELEMENT = 3;
@@ -39,11 +39,13 @@ class ReflectionXHPChildrenDeclaration {
   /*<<__Memoize>>*/
   public function getExpression(): ReflectionXHPChildrenExpression {
     $data = $this->data;
-    invariant(
+    assert(
       is_array($data),
-      "Tried to get child expression for XHP class %s, but it does not ".
-      "have an expression.",
-      :xhp::class2element($this->context)
+      sprintf(
+        "Tried to get child expression for XHP class %s, but it does not ".
+        "have an expression.",
+        :xhp::class2element($this->context)
+      ),
     );
     return new ReflectionXHPChildrenExpression($this->context, $data);
   }
@@ -79,17 +81,17 @@ class ReflectionXHPChildrenExpression {
   public function getSubExpressions(
   ): array/*(ReflectionXHPChildrenExpression, ReflectionXHPChildrenExpression)*/ {
     $type = $this->getType();
-    invariant(
+    assert(
       $type === XHPChildrenExpressionType::SUB_EXPR_SEQUENCE ||
       $type === XHPChildrenExpressionType::SUB_EXPR_DISJUNCTION,
-      'Only disjunctions and sequences have two sub-expressions - in %s',
-      :xhp::class2element($this->context)
+      'Only disjunctions and sequences have two sub-expressions - in '.
+      :xhp::class2element($this->context),
     );
     $sub_expr_1 = $this->data[1];
     $sub_expr_2 = $this->data[2];
-    invariant(
+    assert(
       is_array($sub_expr_1) && is_array($sub_expr_2),
-      'Data is not subexpressions - in %s',
+      'Data is not subexpressions - in '.
       $this->context
     );
     return array(
@@ -101,10 +103,10 @@ class ReflectionXHPChildrenExpression {
   /*<<__Memoize>>*/
   public function getConstraintType(): int {
     $type = $this->getType();
-    invariant(
+    assert(
       $type !== XHPChildrenExpressionType::SUB_EXPR_SEQUENCE &&
       $type !== XHPChildrenExpressionType::SUB_EXPR_DISJUNCTION,
-      'Disjunctions and sequences do not have a constraint type - in %s',
+      'Disjunctions and sequences do not have a constraint type - in '.
       :xhp::class2element($this->context)
     );
     return XHPChildrenConstraintType::assert($this->data[1]);
@@ -113,30 +115,32 @@ class ReflectionXHPChildrenExpression {
   /*<<__Memoize>>*/
   public function getConstraintString(): string {
     $type = $this->getConstraintType();
-    invariant(
+    assert(
       $type === XHPChildrenConstraintType::ELEMENT ||
       $type === XHPChildrenConstraintType::CATEGORY,
-      'Only element and category constraints have string data - in %s',
+      'Only element and category constraints have string data - in '.
       :xhp::class2element($this->context)
     );
     $data = $this->data[2];
-    invariant(is_string($data), 'Expected string data');
+    assert(is_string($data), 'Expected string data');
     return $data;
   }
 
   /*<<__Memoize>>*/
   public function getSubExpression(): ReflectionXHPChildrenExpression {
-    invariant(
+    assert(
       $this->getConstraintType() === XHPChildrenConstraintType::SUB_EXPR,
-      'Only expression constraints have a single sub-expression - in %s',
+      'Only expression constraints have a single sub-expression - in '.
       $this->context
     );
     $data = $this->data[2];
-    invariant(
+    assert(
       is_array($data),
-      'Expected a sub-expression, got a %s - in %s',
-      is_object($data) ? get_class($data) : gettype($data),
-      $this->context
+      sprintf(
+        'Expected a sub-expression, got a %s - in %s',
+        is_object($data) ? get_class($data) : gettype($data),
+        $this->context,
+      ),
     );
     return new ReflectionXHPChildrenExpression($this->context, $data);
   }

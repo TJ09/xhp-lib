@@ -1,5 +1,5 @@
 <?php
-final class XHPAttributeType extends \HHto7\Runtime\Enum {
+final class XHPAttributeType extends XHPInternalEnumish {
   const TYPE_STRING = 1;
   const TYPE_BOOL = 2;
   const TYPE_INTEGER = 3;
@@ -56,17 +56,18 @@ class ReflectionXHPAttribute {
   /*<<__Memoize>>*/
   public function getValueClass(): string {
     $t = $this->getValueType();
-    invariant(
+    assert(
       $this->getValueType() === XHPAttributeType::TYPE_OBJECT,
-      'Tried to get value class for attribute %s of type %s - needed '.'OBJECT',
-      $this->getName(),
-      XHPAttributeType::getNames()[$this->getValueType()]
+      sprintf(
+        'Tried to get value class for attribute %s of type %s - needed '.'OBJECT',
+        $this->getName(),
+        XHPAttributeType::getNames()[$this->getValueType()],
+      ),
     );
     $v = $this->extraType;
-    invariant(
+    assert(
       is_string($v),
-      'Class name for attribute %s is not a string',
-      $this->getName()
+      'Class name for attribute '.$this->getName().' is not a string',
     );
     return $v;
   }
@@ -74,17 +75,18 @@ class ReflectionXHPAttribute {
   /*<<__Memoize>>*/
   public function getEnumValues(): iterable/*<string>*/ {
     $t = $this->getValueType();
-    invariant(
+    assert(
       $this->getValueType() === XHPAttributeType::TYPE_ENUM,
-      'Tried to get enum values for attribute %s of type %s - needed '.'ENUM',
-      $this->getName(),
-      XHPAttributeType::getNames()[$this->getValueType()]
+      sprintf(
+        'Tried to get enum values for attribute %s of type %s - needed '.'ENUM',
+        $this->getName(),
+        XHPAttributeType::getNames()[$this->getValueType()]
+      ),
     );
     $v = $this->extraType;
-    invariant(
+    assert(
       is_array($v),
-      'Class name for attribute %s is not a string',
-      $this->getName()
+      'Class name for attribute '.$this->getName().' is not a string',
     );
     return $v;
   }

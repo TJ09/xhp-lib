@@ -12,10 +12,9 @@ class ReflectionXHPClass {
   private $className;
   public function __construct(string $className) {
     $this->className = $className;
-    invariant(
+    assert(
       class_exists($this->className),
-      'Invalid class name: %s',
-      $this->className
+      'Invalid class name: '.$this->className
     );
   }
 
@@ -38,11 +37,13 @@ class ReflectionXHPClass {
 
   public function getAttribute(string $name): ReflectionXHPAttribute {
     $map = $this->getAttributes();
-    invariant(
+    assert(
       isset($map[$name]),
-      'Tried to get attribute %s for XHP element %s, which does not exist',
-      $name,
-      $this->getElementName()
+      sprintf(
+        'Tried to get attribute %s for XHP element %s, which does not exist',
+        $name,
+        $this->getElementName(),
+      ),
     );
     return $map[$name];
   }
