@@ -14,7 +14,7 @@ class :test:renders-primitive extends :x:element {
   }
 }
 
-class BasicsTest extends PHPUnit_Framework_TestCase {
+class BasicsTest extends PHPUnit\Framework\TestCase {
   public function testDivWithString() {
     $xhp =
       <div>

@@ -35,7 +35,7 @@ class :test:with-class-on-root extends :x:element {
   }
 }
 
-class XHPHelpersTest extends PHPUnit_Framework_TestCase {
+class XHPHelpersTest extends PHPUnit\Framework\TestCase {
   public function testTransferAttributesWithoutHelpers(): void {
     $x = <test:no-xhphelpers data-foo="bar" />;
     $this->assertSame('<div></div>', $x->toString());

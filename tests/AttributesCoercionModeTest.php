@@ -23,7 +23,7 @@ class :test:attribute-coercion-modes extends :x:element {
   }
 }
 
-class AttributesCoercionModeTest extends PHPUnit_Framework_TestCase {
+class AttributesCoercionModeTest extends PHPUnit\Framework\TestCase {
   private /*?XHPAttributeCoercionMode*/ $coercionMode;
   private /*mixed*/ $errorReporting;
 
@@ -56,50 +56,38 @@ class AttributesCoercionModeTest extends PHPUnit_Framework_TestCase {
     $this->assertSame(true, $x->:mybool);
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testIntishStringAsInt(): void {
+      $this->expectException(XHPInvalidAttributeException::class);
       XHPAttributeCoercion::SetMode(XHPAttributeCoercionMode::THROW_EXCEPTION);
       $x = <test:attribute-coercion-modes myint="1" />;
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testFloatAsInt(): void {
+      $this->expectException(XHPInvalidAttributeException::class);
       XHPAttributeCoercion::SetMode(XHPAttributeCoercionMode::THROW_EXCEPTION);
       $x = <test:attribute-coercion-modes myint={1.23} />;
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testIntAsFloat(): void {
+      $this->expectException(XHPInvalidAttributeException::class);
       XHPAttributeCoercion::SetMode(XHPAttributeCoercionMode::THROW_EXCEPTION);
       $x = <test:attribute-coercion-modes myfloat={2} />;
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testIntAsString(): void {
+      $this->expectException(XHPInvalidAttributeException::class);
       XHPAttributeCoercion::SetMode(XHPAttributeCoercionMode::THROW_EXCEPTION);
       $x = <test:attribute-coercion-modes mystring={2} />;
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testIntAsBool(): void {
+      $this->expectException(XHPInvalidAttributeException::class);
       XHPAttributeCoercion::SetMode(XHPAttributeCoercionMode::THROW_EXCEPTION);
       $x = <test:attribute-coercion-modes mybool={1} />;
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testStringAsBool(): void {
+      $this->expectException(XHPInvalidAttributeException::class);
       XHPAttributeCoercion::SetMode(XHPAttributeCoercionMode::THROW_EXCEPTION);
       $x = <test:attribute-coercion-modes mybool="true" />;
   }
@@ -120,7 +108,7 @@ class AttributesCoercionModeTest extends PHPUnit_Framework_TestCase {
     } catch (Exception $e) {
       $exception = $e;
     }
-    $this->assertInstanceOf('PHPUnit_Framework_Error_Deprecated', $exception);
+    $this->assertInstanceOf(PHPUnit\Framework\Error\Deprecated::class, $exception);
 
     error_reporting(E_ALL & ~E_USER_DEPRECATED);
     $x = <test:attribute-coercion-modes mystring={2} />;

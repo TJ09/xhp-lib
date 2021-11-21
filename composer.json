@@ -11,12 +11,7 @@
         "ext-xhp": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.1.0"
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.x-dev"
-        }
+        "phpunit/phpunit": "^9.0.0"
     },
     "autoload": {
         "classmap": ["src"]

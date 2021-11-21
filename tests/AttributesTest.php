@@ -58,7 +58,7 @@ class StringableTestClass {
   }
 }
 
-class AttributesTest extends PHPUnit_Framework_TestCase {
+class AttributesTest extends PHPUnit\Framework\TestCase {
   public function setUp(): void {
     XHPAttributeCoercion::SetMode(XHPAttributeCoercionMode::SILENT);
     :xhp::enableAttributeValidation();
@@ -82,10 +82,8 @@ class AttributesTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals('<div></div>', $x->toString());
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testInvalidArrayKeys(): void {
+    $this->expectException(XHPInvalidAttributeException::class);
     $x = <test:attribute-types myarraykey={1.23} />;
       $x->toString();
   }
@@ -97,10 +95,8 @@ class AttributesTest extends PHPUnit_Framework_TestCase {
     $this->assertSame('<div></div>', $x->toString());
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testInvalidNum(): void {
+    $this->expectException(XHPInvalidAttributeException::class);
     $x = <test:attribute-types mynum="123" />;
       $x->toString();
   }
@@ -119,17 +115,13 @@ class AttributesTest extends PHPUnit_Framework_TestCase {
     $this->assertSame('123', $x->:mystring);
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testUnstringableObjectAsString(): void {
+    $this->expectException(XHPInvalidAttributeException::class);
     $x = <test:attribute-types mystring={new EmptyTestClass()} />;
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testArrayAsString(): void {
+    $this->expectException(XHPInvalidAttributeException::class);
     $x = <test:attribute-types mystring={[]} />;
   }
 
@@ -148,31 +140,23 @@ class AttributesTest extends PHPUnit_Framework_TestCase {
     $this->assertSame(1, $x->:myint);
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testObjectAsInt(): void {
+    $this->expectException(XHPInvalidAttributeException::class);
     $x = <test:attribute-types myint={new EmptyTestClass()} />;
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testIncompleteObjectAsInt(): void {
+    $this->expectException(XHPInvalidAttributeException::class);
     $x = <test:attribute-types myint={new __PHP_Incomplete_Class()} />;
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testArrayAsInt(): void {
+    $this->expectException(XHPInvalidAttributeException::class);
     $x = <test:attribute-types myint={[]} />;
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testNumericPrefixStringAsInt(): void {
+    $this->expectException(XHPInvalidAttributeException::class);
     $x = <test:attribute-types myint="123derp" />;
   }
 
@@ -186,18 +170,14 @@ class AttributesTest extends PHPUnit_Framework_TestCase {
     $this->assertSame(false, $x->:mybool);
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testMixedCaseFalseStringAsBool(): void {
+    $this->expectException(XHPInvalidAttributeException::class);
     $x = <test:attribute-types mybool="False" />;
     // 'False' is actually truthy
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testNoStringAsBool(): void {
+    $this->expectException(XHPInvalidAttributeException::class);
     $x = <test:attribute-types mybool="No" />;
     // 'No' is actually truthy
   }
@@ -207,11 +187,9 @@ class AttributesTest extends PHPUnit_Framework_TestCase {
     $this->assertSame(true, $x->:mybool);
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testInvalidEnumValue(): void {
-      $x = <test:attribute-types myenum="derp" />;
+    $this->expectException(XHPInvalidAttributeException::class);
+    $x = <test:attribute-types myenum="derp" />;
   }
 
   public function testIntAsFloat(): void {
@@ -226,31 +204,23 @@ class AttributesTest extends PHPUnit_Framework_TestCase {
     $this->assertSame(1.23, $x->:myfloat);
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testNonNumericStringAsFloat(): void {
+    $this->expectException(XHPInvalidAttributeException::class);
     $x = <test:attribute-types myfloat="herpderp" />;
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testNumericPrefixStringAsFloat(): void {
+    $this->expectException(XHPInvalidAttributeException::class);
     $x = <test:attribute-types myfloat="123derp" />;
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testNotAContainerAsArray(): void {
+    $this->expectException(XHPInvalidAttributeException::class);
     $x = <test:attribute-types myarray={new EmptyTestClass()} />;
   }
 
-  /**
-   * @expectedException XHPInvalidAttributeException
-   */
   public function testIncompatibleObjectAsObject(): void {
+    $this->expectException(XHPInvalidAttributeException::class);
     $x = <test:attribute-types myobject={new EmptyTestClass()} />;
   }
 
@@ -260,11 +230,9 @@ class AttributesTest extends PHPUnit_Framework_TestCase {
     $this->assertSame('<div>herp</div>', $x->toString());
   }
 
-  /**
-   * @expectedException XHPAttributeRequiredException
-   */
   public function testOmittingRequiredAttributes(): void {
-      $x = <test:required-attributes />;
+    $this->expectException(XHPAttributeRequiredException::class);
+    $x = <test:required-attributes />;
     $this->assertNull($x->:mystring);
   }
 
@@ -280,10 +248,8 @@ class AttributesTest extends PHPUnit_Framework_TestCase {
     $this->assertSame('<div>mydefault</div>', $x->toString());
   }
 
-  /**
-   * @expectedException XHPAttributeNotSupportedException
-   */
   public function testBogusAttributes(): void {
+    $this->expectException(XHPAttributeNotSupportedException::class);
     $x = <test:default-attributes idonotexist="derp" />;
   }
 
@@ -294,10 +260,8 @@ class AttributesTest extends PHPUnit_Framework_TestCase {
     $this->assertSame('<div>mydefault</div>', $x->toString());
   }
 
-  /**
-   * @expectedException XHPUnsupportedAttributeTypeException
-   */
   public function testRenderCallableAttribute(): void {
+    $this->expectException(XHPUnsupportedAttributeTypeException::class);
       $x =
       <test:callable-attribute
         foo={function() {

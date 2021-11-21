@@ -21,7 +21,7 @@ class :test:for-reflection extends :x:element {
   }
 }
 
-class ReflectionTest extends PHPUnit_Framework_TestCase {
+class ReflectionTest extends PHPUnit\Framework\TestCase {
   private /*?ReflectionXHPClass*/ $rxc;
 
   public function setUp(): void {

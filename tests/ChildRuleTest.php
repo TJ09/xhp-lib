@@ -104,7 +104,7 @@ class :test:needs-comma-category extends :x:element {
   }
 }
 
-class ChildRuleTest extends PHPUnit_Framework_TestCase {
+class ChildRuleTest extends PHPUnit\Framework\TestCase {
   public function testNoChild(): void {
     $elems = [
       <test:no-children />,
@@ -117,10 +117,8 @@ class ChildRuleTest extends PHPUnit_Framework_TestCase {
     }
   }
 
-  /**
-   * @expectedException XHPInvalidChildrenException
-   */
   public function testUnexpectedChild(): void {
+	  $this->expectException(XHPInvalidChildrenException::class);
       $x = <test:no-children><div /></test:no-children>;
       $x->toString();
   }
@@ -285,10 +283,8 @@ class ChildRuleTest extends PHPUnit_Framework_TestCase {
     $this->assertSame('<div>foobar</div>', $x->toString());
   }
 
-  /**
-   * @expectedException XHPInvalidChildrenException
-   */
   public function testNested(): void {
+	  $this->expectException(XHPInvalidChildrenException::class);
       $x = <div><test:at-least-one-child /></div>;
       $x->toString();
   }

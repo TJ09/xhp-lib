@@ -10,7 +10,7 @@ class :test:contexts extends :x:element {
   }
 }
 
-class XHPContextsTest extends PHPUnit_Framework_TestCase {
+class XHPContextsTest extends PHPUnit\Framework\TestCase {
   public function testContextSimple(): void {
     $x = <test:contexts />;
     $x->setContext('heading', 'herp');

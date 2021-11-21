@@ -26,7 +26,7 @@ class ExampleVeryUnsafeRenderable extends ExampleUnsafeRenderable
   implements XHPUnsafeRenderable, XHPAlwaysValidChild {
 }
 
-class UnsafeInterfacesTest extends PHPUnit_Framework_TestCase {
+class UnsafeInterfacesTest extends PHPUnit\Framework\TestCase {
   public function testUnsafeRenderable() {
     $x = new ExampleUnsafeRenderable('<script>lollerskates</script>');
     $xhp = <div>{$x}</div>;
@@ -36,10 +36,8 @@ class UnsafeInterfacesTest extends PHPUnit_Framework_TestCase {
     );
   }
 
-  /**
-   * @expectedException XHPInvalidChildrenException
-   */
   public function testInvalidChild() {
+	  $this->expectException(XHPInvalidChildrenException::class);
       $x = new ExampleUnsafeRenderable('foo');
       $xhp = <html>{$x}<body /></html>;
       $xhp->toString(); // validate, throw exception
