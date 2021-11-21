@@ -88,7 +88,7 @@ trait XHPHelpers /*implements HasXHPHelpers*/ {
    * The grunt work of transfering attributes. Don't call this function
    * directly. Instead, use one of the transfer/copy flavors above.
    */
-  final private function transferAttributesImpl(
+  private function transferAttributesImpl(
     :x:composable-element $target,
     ?array/*<string>*/ $ignore = null,
     bool $remove = false

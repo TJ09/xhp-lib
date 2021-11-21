@@ -631,7 +631,7 @@ abstract class :x:composable-element extends :xhp {
     }
   }
 
-  final private function validateChildrenExpression($decl, &$index) {
+  private function validateChildrenExpression($decl, &$index) {
     switch ($decl[0]) {
       case XHPChildrenExpressionType::SINGLE:
         // Exactly once -- :fb-thing
@@ -678,7 +678,7 @@ abstract class :x:composable-element extends :xhp {
     }
   }
 
-  final private function validateChildrenRule($type, $rule, &$index) {
+  private function validateChildrenRule($type, $rule, &$index) {
     switch ($type) {
       case XHPChildrenConstraintType::ANY:
         if (isset($this->children[$index])) {
@@ -738,7 +738,7 @@ abstract class :x:composable-element extends :xhp {
     return $this->renderChildrenDeclaration($decl);
   }
 
-  final private function renderChildrenDeclaration($decl) {
+  private function renderChildrenDeclaration($decl) {
     switch ($decl[0]) {
       case 0:
         return $this->renderChildrenRule($decl[1], $decl[2]);
@@ -762,7 +762,7 @@ abstract class :x:composable-element extends :xhp {
     }
   }
 
-  final private function renderChildrenRule($type, $rule) {
+  private function renderChildrenRule($type, $rule) {
     switch ($type) {
       case 1:
         return 'any';
