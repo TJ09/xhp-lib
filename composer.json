@@ -1,8 +1,8 @@
 {
-    "name": "facebook/xhp-lib",
+    "name": "tj09/xhp-lib",
     "description": "Class library for XHP",
-    "keywords": ["facebook", "xhp", "hhvm", "hack"],
-    "homepage": "https://github.com/facebook/xhp-lib",
+    "keywords": ["xhp"],
+    "homepage": "https://github.com/TJ09/xhp-lib",
     "license": ["MIT"],
     "minimum-stability": "dev",
     "prefer-stable": true,
