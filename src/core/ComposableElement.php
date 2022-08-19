@@ -226,7 +226,6 @@ abstract class :x:composable-element extends :xhp {
    * not set.
    *
    * @param $attr      attribute to fetch
-   * @return           value
    */
   final public function getAttribute(string $attr) {
     // Return the attribute if it's there
@@ -416,7 +415,7 @@ abstract class :x:composable-element extends :xhp {
    * that are rendered as children of that root element will receive this
    * context WHEN RENDERED. The context will not be available before render.
    *
-   * @param Map $context  A map of key/value pairs
+   * @param array $context  A map of key/value pairs
    * @return :xhp         $this
    */
   final public function addContextMap(iterable/*<string, mixed>*/ $context)/*: this*/ {
