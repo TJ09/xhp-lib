@@ -11,5 +11,5 @@
 class :nav extends :xhp:html-element {
   category %flow;
   children (pcdata | %flow)*;
-  protected /*string*/ $tagName = 'nav';
+  protected string $tagName = 'nav';
 }

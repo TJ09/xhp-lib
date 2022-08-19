@@ -17,5 +17,5 @@ class :th extends :xhp:html-element {
     enum {'col', 'colgroup', 'row', 'rowgroup'} scope,
     string sorted;
   children (pcdata | %flow)*;
-  protected /*string*/ $tagName = 'th';
+  protected string $tagName = 'th';
 }

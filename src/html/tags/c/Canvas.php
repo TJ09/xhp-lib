@@ -15,5 +15,5 @@ class :canvas extends :xhp:html-element {
   category %flow, %phrase, %embedded;
   // Should not contain :table
   children (pcdata | %flow)*;
-  protected /*string*/ $tagName = 'canvas';
+  protected string $tagName = 'canvas';
 }

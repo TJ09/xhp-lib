@@ -11,5 +11,5 @@
 class :footer extends :xhp:html-element {
   category %flow;
   children (pcdata | %flow)*;
-  protected /*string*/ $tagName = 'footer';
+  protected string $tagName = 'footer';
 }

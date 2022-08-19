@@ -23,5 +23,5 @@ class :body extends :xhp:html-element {
     string onstorage,
     string onunload;
   children (pcdata | %flow)*;
-  protected /*string*/ $tagName = 'body';
+  protected string $tagName = 'body';
 }

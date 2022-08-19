@@ -17,5 +17,5 @@ class :keygen extends :xhp:html-singleton {
     string keytype,
     string name;
   category %flow, %phrase, %interactive;
-  protected /*string*/ $tagName = 'keygen';
+  protected string $tagName = 'keygen';
 }

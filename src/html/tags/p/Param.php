@@ -12,5 +12,5 @@ class :param extends :xhp:pcdata-element {
   attribute
     string name,
     string value;
-  protected /*string*/ $tagName = 'param';
+  protected string $tagName = 'param';
 }

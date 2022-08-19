@@ -11,5 +11,5 @@
 class :figure extends :xhp:html-element {
   category %flow, %sectioning;
   children ((:figcaption, %flow+) | (%flow+, :figcaption?));
-  protected /*string*/ $tagName = 'figure';
+  protected string $tagName = 'figure';
 }

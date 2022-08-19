@@ -10,5 +10,5 @@
 
 class :title extends :xhp:pcdata-element {
   category %metadata;
-  protected /*string*/ $tagName = 'title';
+  protected string $tagName = 'title';
 }

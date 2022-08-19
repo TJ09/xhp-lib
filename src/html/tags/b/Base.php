@@ -13,5 +13,5 @@ class :base extends :xhp:html-singleton {
     string href,
     string target;
   category %metadata;
-  protected /*string*/ $tagName = 'base';
+  protected string $tagName = 'base';
 }

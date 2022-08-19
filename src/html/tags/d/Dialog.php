@@ -12,5 +12,5 @@ class :dialog extends :xhp:html-element {
   attribute bool open;
   category %flow, %sectioning;
   children (%flow);
-  protected /*string*/ $tagName = 'dialog';
+  protected string $tagName = 'dialog';
 }

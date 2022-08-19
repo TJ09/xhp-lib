@@ -29,5 +29,5 @@ class :area extends :xhp:html-singleton {
     string target,
     string type;
   category %flow, %phrase;
-  protected $tagName = 'area';
+  protected string $tagName = 'area';
 }

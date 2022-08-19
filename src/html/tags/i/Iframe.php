@@ -19,5 +19,5 @@ class :iframe extends :xhp:pcdata-element {
     string srcdoc,
     int width;
   category %flow, %phrase, %embedded, %interactive;
-  protected /*string*/ $tagName = 'iframe';
+  protected string $tagName = 'iframe';
 }

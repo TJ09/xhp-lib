@@ -10,5 +10,5 @@
 
 class :hr extends :xhp:html-singleton {
   category %flow;
-  protected /*string*/ $tagName = 'hr';
+  protected string $tagName = 'hr';
 }

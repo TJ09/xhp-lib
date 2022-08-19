@@ -12,5 +12,5 @@ class :address extends :xhp:html-element {
   category %flow;
   // May not contain %heading, %sectioning, :header, :footer, or :address
   children (pcdata | %flow)*;
-  protected /*string*/ $tagName = 'address';
+  protected string $tagName = 'address';
 }

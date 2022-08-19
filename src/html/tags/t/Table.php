@@ -19,5 +19,5 @@ class :table extends :xhp:html-element {
     :thead?,
     ((:tfoot, (:tbody+ | :tr*)) | ((:tbody+ | :tr*), :tfoot?))
   );
-  protected /*string*/ $tagName = 'table';
+  protected string $tagName = 'table';
 }

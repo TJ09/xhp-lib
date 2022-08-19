@@ -14,5 +14,5 @@ class :style extends :xhp:raw-pcdata-element {
     bool scoped,
     string type;
   category %flow, %metadata;
-  protected /*string*/ $tagName = 'style';
+  protected string $tagName = 'style';
 }

@@ -79,5 +79,5 @@ class :input extends :xhp:html-singleton {
     string value,
     int width;
   category %flow, %phrase, %interactive;
-  protected $tagName = 'input';
+  protected string $tagName = 'input';
 }

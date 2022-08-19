@@ -12,5 +12,5 @@ class :details extends :xhp:html-element {
   attribute bool open;
   category %flow, %phrase, %interactive;
   children (:summary, %flow+);
-  protected /*string*/ $tagName = 'details';
+  protected string $tagName = 'details';
 }

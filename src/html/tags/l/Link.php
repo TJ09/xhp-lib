@@ -19,5 +19,5 @@ class :link extends :xhp:html-singleton {
     string sizes,
     string type;
   category %metadata;
-  protected /*string*/ $tagName = 'link';
+  protected string $tagName = 'link';
 }

@@ -15,5 +15,5 @@ class :output extends :xhp:html-element {
     string name;
   category %flow, %phrase;
   children (pcdata | %phrase)*;
-  protected /*string*/ $tagName = 'output';
+  protected string $tagName = 'output';
 }

@@ -10,5 +10,5 @@
 
 class :tfoot extends :xhp:html-element {
   children (:tr)*;
-  protected /*string*/ $tagName = 'tfoot';
+  protected string $tagName = 'tfoot';
 }

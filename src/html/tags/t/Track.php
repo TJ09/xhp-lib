@@ -15,5 +15,5 @@ class :track extends :xhp:html-singleton {
     string label,
     string src,
     string srclang;
-  protected /*string*/ $tagName = 'track';
+  protected string $tagName = 'track';
 }

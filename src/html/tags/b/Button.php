@@ -25,5 +25,5 @@ class :button extends :xhp:html-element {
   category %flow, %phrase, %interactive;
   // Should not contain interactive
   children (pcdata | %phrase)*;
-  protected /*string*/ $tagName = 'button';
+  protected string $tagName = 'button';
 }

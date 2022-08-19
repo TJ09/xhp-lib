@@ -10,5 +10,5 @@
 
 class :rt extends :xhp:html-element {
   children (pcdata | %phrase)+;
-  protected /*string*/ $tagName = 'rt';
+  protected string $tagName = 'rt';
 }

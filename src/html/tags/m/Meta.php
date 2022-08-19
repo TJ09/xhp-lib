@@ -20,5 +20,5 @@ class :meta extends :xhp:html-singleton {
     string property;
   // If itemprop is present, this element is allowed within the <body>.
   category %metadata, %flow, %phrase;
-  protected /*string*/ $tagName = 'meta';
+  protected string $tagName = 'meta';
 }

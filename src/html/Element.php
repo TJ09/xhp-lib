@@ -109,7 +109,7 @@ abstract class :xhp:html-element extends :x:primitive {
     string onvolumechange,
     string onwaiting;
 
-  protected /*string*/ $tagName = '';
+  protected string $tagName = '';
 
   protected final function renderBaseAttrs(): string {
     $buf = '<'.$this->tagName;

@@ -18,5 +18,5 @@ class :menuitem extends :xhp:html-singleton {
     string icon,
     string radiogroup,
     enum {'checkbox', 'command', 'radio'} type;
-  protected /*string*/ $tagName = 'menuitem';
+  protected string $tagName = 'menuitem';
 }

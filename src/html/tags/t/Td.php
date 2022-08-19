@@ -14,5 +14,5 @@ class :td extends :xhp:html-element {
     string headers,
     int rowspan;
   children (pcdata | %flow)*;
-  protected /*string*/ $tagName = 'td';
+  protected string $tagName = 'td';
 }

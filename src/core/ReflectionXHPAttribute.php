@@ -20,9 +20,9 @@ class ReflectionXHPAttribute {
    */
   private /*mixed*/ $extraType;
   private /*mixed*/ $defaultValue;
-  private /*bool*/ $required;
+  private bool $required;
 
-  private static /*ImmSet<string>*/ $specialAttributes = [ 'data', 'aria' ];
+  const SPECIAL_ATTRIBUTES = [ 'data', 'aria' ];
   private $name;
 
   public function __construct(string $name, array $decl) {
@@ -98,7 +98,7 @@ class ReflectionXHPAttribute {
   public static function IsSpecial(string $attr): bool {
     return strlen($attr) >= 6 &&
       $attr[4] === '-' &&
-      self::$specialAttributes->contains(substr($attr, 0, 4));
+      array_search(substr($attr, 0, 4), self::SPECIAL_ATTRIBUTES) !== false;
   }
 
   public function __toString(): string {

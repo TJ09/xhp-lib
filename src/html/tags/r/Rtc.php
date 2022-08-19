@@ -10,5 +10,5 @@
 
 class :rtc extends :xhp:html-element {
   children (pcdata | %phrase)+;
-  protected /*string*/ $tagName = 'rtc';
+  protected string $tagName = 'rtc';
 }

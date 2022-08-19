@@ -15,5 +15,5 @@ class :fieldset extends :xhp:html-element {
     string name;
   category %flow;
   children (:legend?, (pcdata | %flow)*);
-  protected /*string*/ $tagName = 'fieldset';
+  protected string $tagName = 'fieldset';
 }

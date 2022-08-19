@@ -20,5 +20,5 @@ class :object extends :xhp:html-element {
     int width;
   category %flow, %phrase, %embedded, %interactive;
   children (:param*, (pcdata | %flow)*);
-  protected /*string*/ $tagName = 'object';
+  protected string $tagName = 'object';
 }

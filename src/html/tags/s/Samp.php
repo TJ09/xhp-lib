@@ -11,5 +11,5 @@
 class :samp extends :xhp:html-element {
   category %flow, %phrase;
   children (pcdata | %phrase)*;
-  protected /*string*/ $tagName = 'samp';
+  protected string $tagName = 'samp';
 }

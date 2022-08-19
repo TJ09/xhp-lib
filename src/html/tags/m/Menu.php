@@ -14,5 +14,5 @@ class :menu extends :xhp:html-element {
     enum {'popup', 'toolbar'} type;
   category %flow;
   children ((:menuitem | :hr | :menu)* | :li* | %flow*);
-  protected /*string*/ $tagName = 'menu';
+  protected string $tagName = 'menu';
 }

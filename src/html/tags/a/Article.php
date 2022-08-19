@@ -11,5 +11,5 @@
 class :article extends :xhp:html-element {
   category %flow, %sectioning;
   children (pcdata | %flow)*;
-  protected /*string*/ $tagName = 'article';
+  protected string $tagName = 'article';
 }

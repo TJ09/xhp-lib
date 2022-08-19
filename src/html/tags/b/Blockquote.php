@@ -12,5 +12,5 @@ class :blockquote extends :xhp:html-element {
   attribute string cite;
   category %flow, %sectioning;
   children (pcdata | %flow)*;
-  protected /*string*/ $tagName = 'blockquote';
+  protected string $tagName = 'blockquote';
 }

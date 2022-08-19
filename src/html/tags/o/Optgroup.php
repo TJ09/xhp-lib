@@ -13,5 +13,5 @@ class :optgroup extends :xhp:html-element {
     bool disabled,
     string label;
   children (:option)*;
-  protected /*string*/ $tagName = 'optgroup';
+  protected string $tagName = 'optgroup';
 }

@@ -11,5 +11,5 @@
 class :colgroup extends :xhp:html-element {
   attribute int span;
   children (:col)*;
-  protected /*string*/ $tagName = 'colgroup';
+  protected string $tagName = 'colgroup';
 }

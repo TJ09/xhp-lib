@@ -10,5 +10,5 @@
 
 class :br extends :xhp:html-singleton {
   category %flow, %phrase;
-  protected /*string*/ $tagName = 'br';
+  protected string $tagName = 'br';
 }

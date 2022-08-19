@@ -11,5 +11,5 @@
 class :div extends :xhp:html-element {
   category %flow;
   children (pcdata | %flow)*;
-  protected /*string*/ $tagName = 'div';
+  protected string $tagName = 'div';
 }

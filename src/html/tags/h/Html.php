@@ -13,5 +13,5 @@ class :html extends :xhp:html-element {
     string manifest,
     string xmlns;
   children (:head, :body);
-  protected /*string*/ $tagName = 'html';
+  protected string $tagName = 'html';
 }

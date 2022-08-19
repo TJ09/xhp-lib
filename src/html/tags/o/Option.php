@@ -14,5 +14,5 @@ class :option extends :xhp:pcdata-element {
     string label,
     bool selected,
     string value;
-  protected /*string*/ $tagName = 'option';
+  protected string $tagName = 'option';
 }

@@ -12,5 +12,5 @@ class :data extends :xhp:html-element {
   attribute string value @required;
   category %flow, %phrase;
   children (%phrase*);
-  protected /*string*/ $tagName = 'data';
+  protected string $tagName = 'data';
 }

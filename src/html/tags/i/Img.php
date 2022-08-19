@@ -20,5 +20,5 @@ class :img extends :xhp:html-singleton {
     string usemap,
     int width;
   category %flow, %phrase;
-  protected /*string*/ $tagName = 'img';
+  protected string $tagName = 'img';
 }

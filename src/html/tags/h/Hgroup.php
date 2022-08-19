@@ -11,5 +11,5 @@
 class :hgroup extends :xhp:html-element {
   category %flow, %heading;
   children (:h1 | :h2 | :h3 | :h4 | :h5 | :h6)+;
-  protected /*string*/ $tagName = 'hgroup';
+  protected string $tagName = 'hgroup';
 }

@@ -11,5 +11,5 @@
 class :header extends :xhp:html-element {
   category %flow, %heading;
   children (pcdata | %flow)*;
-  protected /*string*/ $tagName = 'header';
+  protected string $tagName = 'header';
 }

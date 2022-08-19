@@ -10,5 +10,5 @@
 
 class :thead extends :xhp:html-element {
   children (:tr)*;
-  protected /*string*/ $tagName = 'thead';
+  protected string $tagName = 'thead';
 }

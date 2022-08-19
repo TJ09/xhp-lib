@@ -11,5 +11,5 @@
 class :datalist extends :xhp:html-element {
   category %flow, %phrase;
   children (%phrase+ | :option*);
-  protected /*string*/ $tagName = 'datalist';
+  protected string $tagName = 'datalist';
 }

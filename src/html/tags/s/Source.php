@@ -15,5 +15,5 @@ class :source extends :xhp:html-singleton {
     string src,
     string srcset,
     string type;
-  protected /*string*/ $tagName = 'source';
+  protected string $tagName = 'source';
 }

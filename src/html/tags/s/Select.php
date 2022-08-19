@@ -19,5 +19,5 @@ class :select extends :xhp:html-element {
     int size;
   category %flow, %phrase, %interactive;
   children (:option | :optgroup)*;
-  protected /*string*/ $tagName = 'select';
+  protected string $tagName = 'select';
 }

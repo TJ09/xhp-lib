@@ -11,5 +11,5 @@
 class :section extends :xhp:html-element {
   category %flow, %sectioning;
   children (pcdata | %flow)*;
-  protected /*string*/ $tagName = 'section';
+  protected string $tagName = 'section';
 }

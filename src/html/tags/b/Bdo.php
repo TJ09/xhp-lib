@@ -11,5 +11,5 @@
 class :bdo extends :xhp:html-element {
   category %flow, %phrase;
   children (pcdata | %phrase)*;
-  protected /*string*/ $tagName = 'bdo';
+  protected string $tagName = 'bdo';
 }

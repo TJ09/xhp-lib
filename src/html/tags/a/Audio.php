@@ -20,5 +20,5 @@ class :audio extends :xhp:html-element {
     string src;
   category %flow, %phrase, %embedded, %interactive;
   children (:source*, :track*, (pcdata | %flow)*);
-  protected /*string*/ $tagName = 'audio';
+  protected string $tagName = 'audio';
 }

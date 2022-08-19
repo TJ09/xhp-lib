@@ -11,5 +11,5 @@
 class :bdi extends :xhp:html-element {
   category %flow, %phrase;
   children (pcdata | %phrase)*;
-  protected /*string*/ $tagName = 'bdi';
+  protected string $tagName = 'bdi';
 }

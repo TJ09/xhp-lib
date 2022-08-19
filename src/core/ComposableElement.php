@@ -9,11 +9,11 @@
  */
 
 abstract class :x:composable-element extends :xhp {
-  private /*array*/ $attributes = array();
-  private /*array*/ $children = array();
-  private /*array*/ $context = array();
+  private array $attributes = array();
+  private array $children = array();
+  private array $context = array();
 
-  private static $specialAttributes = array('data' => true, 'aria' => true);
+  const SPECIAL_ATTRIBUTES = array('data' => true, 'aria' => true);
 
   protected function init(): void {}
 
@@ -216,7 +216,7 @@ abstract class :x:composable-element extends :xhp {
     return
       isset($attr[5])
       && $attr[4] == '-'
-      && isset(self::$specialAttributes[substr($attr, 0, 4)]);
+      && isset(self::SPECIAL_ATTRIBUTES[substr($attr, 0, 4)]);
   }
 
   /**

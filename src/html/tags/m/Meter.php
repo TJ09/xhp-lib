@@ -19,5 +19,5 @@ class :meter extends :xhp:html-element {
   category %flow, %phrase;
   // Should not contain :meter
   children (pcdata | %phrase)*;
-  protected /*string*/ $tagName = 'meter';
+  protected string $tagName = 'meter';
 }

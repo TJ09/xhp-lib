@@ -10,5 +10,5 @@
 
 class :head extends :xhp:html-element {
   children (%metadata*);
-  protected /*string*/ $tagName = 'head';
+  protected string $tagName = 'head';
 }

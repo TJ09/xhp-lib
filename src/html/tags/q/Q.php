@@ -12,5 +12,5 @@ class :q extends :xhp:html-element {
   attribute string cite;
   category %flow, %phrase;
   children (pcdata | %phrase)*;
-  protected /*string*/ $tagName = 'q';
+  protected string $tagName = 'q';
 }

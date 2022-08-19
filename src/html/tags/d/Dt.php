@@ -10,5 +10,5 @@
 
 class :dt extends :xhp:html-element {
   children (pcdata | %flow)*;
-  protected /*string*/ $tagName = 'dt';
+  protected string $tagName = 'dt';
 }

@@ -10,5 +10,5 @@
 
 class :tbody extends :xhp:html-element {
   children (:tr)*;
-  protected /*string*/ $tagName = 'tbody';
+  protected string $tagName = 'tbody';
 }

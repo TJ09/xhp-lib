@@ -24,5 +24,5 @@ class :embed extends :xhp:html-element {
 
   category %flow, %phrase, %embedded, %interactive;
   children (pcdata | %phrase)*;
-  protected /*string*/ $tagName = 'embed';
+  protected string $tagName = 'embed';
 }

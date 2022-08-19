@@ -20,5 +20,5 @@ class :script extends :xhp:raw-pcdata-element {
     // Legacy
     string language;
   category %flow, %phrase, %metadata;
-  protected /*string*/ $tagName = 'script';
+  protected string $tagName = 'script';
 }

@@ -23,5 +23,5 @@ class :video extends :xhp:html-element {
     int width;
   category %flow, %phrase, %embedded, %interactive;
   children (:source*, :track*, (pcdata | %flow)*);
-  protected /*string*/ $tagName = 'video';
+  protected string $tagName = 'video';
 }

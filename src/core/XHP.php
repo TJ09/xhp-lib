@@ -51,8 +51,8 @@ abstract class :xhp implements XHPChild, JsonSerializable {
    * production. You should still leave it on while developing new features,
    * though.
    */
-  private static /*bool*/ $validateChildren = true;
-  private static /*bool*/ $validateAttributes = false;
+  private static bool $validateChildren = true;
+  private static bool $validateAttributes = false;
 
   public static function disableChildValidation(): void {
     self::$validateChildren = false;

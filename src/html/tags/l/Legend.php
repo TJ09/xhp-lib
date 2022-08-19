@@ -10,5 +10,5 @@
 
 class :legend extends :xhp:html-element {
   children (pcdata | %phrase)*;
-  protected /*string*/ $tagName = 'legend';
+  protected string $tagName = 'legend';
 }

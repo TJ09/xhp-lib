@@ -15,5 +15,5 @@ class :del extends :xhp:html-element {
   category %flow, %phrase;
   // transparent
   children (pcdata | %flow)*;
-  protected /*string*/ $tagName = 'del';
+  protected string $tagName = 'del';
 }

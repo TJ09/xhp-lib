@@ -14,5 +14,5 @@ class :ins extends :xhp:html-element {
     string datetime;
   category %flow, %phrase;
   children (pcdata | %flow)*;
-  protected /*string*/ $tagName = 'ins';
+  protected string $tagName = 'ins';
 }

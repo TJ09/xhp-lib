@@ -25,5 +25,5 @@ class :textarea extends :xhp:pcdata-element {
     int rows,
     enum {'soft', 'hard'} wrap;
   category %flow, %phrase, %interactive;
-  protected /*string*/ $tagName = 'textarea';
+  protected string $tagName = 'textarea';
 }

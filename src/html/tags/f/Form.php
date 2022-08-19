@@ -21,5 +21,5 @@ class :form extends :xhp:html-element {
   category %flow;
   // Should not contain :form
   children (pcdata | %flow)*;
-  protected /*string*/ $tagName = 'form';
+  protected string $tagName = 'form';
 }

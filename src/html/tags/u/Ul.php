@@ -11,5 +11,5 @@
 class :ul extends :xhp:html-element {
   category %flow;
   children (:li)*;
-  protected /*string*/ $tagName = 'ul';
+  protected string $tagName = 'ul';
 }

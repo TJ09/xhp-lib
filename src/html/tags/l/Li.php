@@ -10,5 +10,5 @@
 
 class :li extends :xhp:html-element {
   children (pcdata | %flow)*;
-  protected /*string*/ $tagName = 'li';
+  protected string $tagName = 'li';
 }

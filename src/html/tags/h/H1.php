@@ -11,5 +11,5 @@
 class :h1 extends :xhp:html-element {
   category %flow;
   children (pcdata | %phrase)*;
-  protected /*string*/ $tagName = 'h1';
+  protected string $tagName = 'h1';
 }
