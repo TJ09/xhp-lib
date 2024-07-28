@@ -13,7 +13,7 @@ class XHPInvalidArrayAttributeException extends XHPException {
     :xhp $that,
     string $type,
     string $attr,
-/*mixed*/ $val
+    mixed $val,
   ) {
     if (is_object($val)) {
       $val_type = get_class($val);

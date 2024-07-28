@@ -18,8 +18,8 @@ class ReflectionXHPAttribute {
    * ENUM: array<string> (enum values)
    * ARRAY: Array decl
    */
-  private /*mixed*/ $extraType;
-  private /*mixed*/ $defaultValue;
+  private mixed $extraType;
+  private mixed $defaultValue;
   private bool $required;
 
   const SPECIAL_ATTRIBUTES = [ 'data', 'aria' ];
@@ -49,7 +49,7 @@ class ReflectionXHPAttribute {
     return $this->defaultValue !== null;
   }
 
-  public function getDefaultValue()/*: mixed*/ {
+  public function getDefaultValue(): mixed {
     return $this->defaultValue;
   }
 

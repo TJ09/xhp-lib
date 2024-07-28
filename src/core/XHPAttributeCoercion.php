@@ -21,7 +21,7 @@ final class XHPAttributeCoercion {
     :x:composable-element $context,
     string $what,
     string $attr,
-    /*mixed*/ $val
+    mixed $val,
   ): void {
     switch (self::GetMode()) {
       case XHPAttributeCoercionMode::SILENT:
@@ -53,7 +53,7 @@ final class XHPAttributeCoercion {
   public static function CoerceToString(
     :x:composable-element $context,
     string $attr,
-    /*mixed*/ $val
+    mixed $val,
   ): string {
     self::LogCoercion($context, 'string', $attr, $val);
     if (is_int($val) || is_float($val) || (is_object($val) && method_exists($val, '__toString'))) {
@@ -66,7 +66,7 @@ final class XHPAttributeCoercion {
   public static function CoerceToInt(
     :x:composable-element $context,
     string $attr,
-    /*mixed*/ $val
+    mixed $val,
   ): int {
     self::LogCoercion($context, 'int', $attr, $val);
     if (
@@ -81,7 +81,7 @@ final class XHPAttributeCoercion {
   public static function CoerceToBool(
     :x:composable-element $context,
     string $attr,
-    /*mixed*/ $val
+    mixed $val,
   ): bool {
     self::LogCoercion($context, 'bool', $attr, $val);
     if ($val === 'true' || $val === 1 || $val === '1' || $val === $attr) {
@@ -98,7 +98,7 @@ final class XHPAttributeCoercion {
   public static function CoerceToFloat(
     :x:composable-element $context,
     string $attr,
-    /*mixed*/ $val
+    mixed $val,
   ): float {
     self::LogCoercion($context, 'float', $attr, $val);
     if (is_numeric($val)) {

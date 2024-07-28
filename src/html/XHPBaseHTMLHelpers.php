@@ -14,7 +14,7 @@ trait XHPBaseHTMLHelpers /*implements HasXHPBaseHTMLHelpers*/ {
   /*
    * Appends a string to the "class" attribute (space separated).
    */
-  public function addClass(string $class)/*: this*/ {
+  public function addClass(string $class): self {
     try {
       $current_class = $this->:class;
       return $this->setAttribute('class', trim($current_class.' '.$class));
@@ -32,7 +32,7 @@ trait XHPBaseHTMLHelpers /*implements HasXHPBaseHTMLHelpers*/ {
   /*
    * Conditionally adds a class to the "class" attribute.
    */
-  public function conditionClass(bool $cond, string $class)/*: this*/ {
+  public function conditionClass(bool $cond, string $class): self {
     return $cond ? $this->addClass($class) : $this;
   }
 

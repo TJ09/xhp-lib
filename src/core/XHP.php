@@ -13,9 +13,9 @@ abstract class :xhp implements XHPChild, JsonSerializable {
     iterable/*<string, mixed>*/ $attributes,
     iterable/*<XHPChild>*/ $children
   );
-  abstract public function appendChild(/*mixed*/ $child)/*: this*/;
-  abstract public function prependChild(/*mixed*/ $child)/*: this*/;
-  abstract public function replaceChildren(/*...*/)/*: this*/;
+  abstract public function appendChild(mixed $child): self;
+  abstract public function prependChild(mixed $child): self;
+  abstract public function replaceChildren(/*...*/): self;
   abstract public function getChildren(
     ?string $selector = null
   ): array/*<XHPChild>*/;
@@ -23,12 +23,12 @@ abstract class :xhp implements XHPChild, JsonSerializable {
   abstract public function getLastChild(?string $selector = null)/*: ?XHPChild*/;
   abstract public function getAttribute(string $attr)/*: mixed*/;
   abstract public function getAttributes(): array/*<string, mixed>*/;
-  abstract public function setAttribute(string $attr, /*mixed*/ $val)/*: this*/;
+  abstract public function setAttribute(string $attr, mixed $val): self;
   abstract public function setAttributes(
     iterable/*<string, mixed>*/ $attrs
-  )/*: this*/;
+  ): self;
   abstract public function isAttributeSet(string $attr): bool;
-  abstract public function removeAttribute(string $attr)/*: this*/;
+  abstract public function removeAttribute(string $attr): self;
   abstract public function categoryOf(string $cat): bool;
   abstract public function toString(): string;
 
@@ -40,7 +40,7 @@ abstract class :xhp implements XHPChild, JsonSerializable {
     return array();
   }
 
-  public /*?string*/ $source;
+  public ?string $source = null;
 
   /**
    * Enabling validation will give you stricter documents; you won't be able to

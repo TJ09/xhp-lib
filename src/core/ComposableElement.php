@@ -61,7 +61,7 @@ abstract class :x:composable-element extends :xhp {
    *
    * @param $child     single child or array of children
    */
-  final public function appendChild(/*mixed*/ $child)/*: this*/ {
+  final public function appendChild(mixed $child): self {
     if (is_array($child) || $child instanceof Traversable) {
       foreach ($child as $c) {
         $this->appendChild($c);
@@ -84,7 +84,7 @@ abstract class :x:composable-element extends :xhp {
    *
    * @param $child     single child or array of children
    */
-  final public function prependChild(/*mixed*/ $child)/*: this*/ {
+  final public function prependChild(mixed $child): self {
     if (is_array($child) || $child instanceof Traversable) {
       foreach (array_reverse($child) as $c) {
         $this->prependChild($c);
@@ -103,7 +103,7 @@ abstract class :x:composable-element extends :xhp {
    *
    * @param $children  Single child or array of children
    */
-  final public function replaceChildren(/*...*/)/*: this*/ {
+  final public function replaceChildren(/*...*/): self {
     // This function has been micro-optimized
     $args = func_get_args();
     $new_children = array();
@@ -309,7 +309,7 @@ abstract class :x:composable-element extends :xhp {
    * @param $attr      attribute to set
    * @param $val       value
    */
-  final public function setAttribute(string $attr, /*mixed*/ $value)/*: this*/ {
+  final public function setAttribute(string $attr, mixed $value): self {
     if (!self::isAttributeSpecial($attr)) {
       if (:xhp::isAttributeValidationEnabled()) {
         $value = $this->validateAttributeValue($attr, $value);
@@ -328,7 +328,7 @@ abstract class :x:composable-element extends :xhp {
    */
   final public function setAttributes(
     iterable/*<string, mixed>*/ $attrs
-  )/*: this*/ {
+  ): self {
     foreach ($attrs as $key => $value) {
       $this->setAttribute($key, $value);
     }
@@ -352,7 +352,7 @@ abstract class :x:composable-element extends :xhp {
    * @param $attr      attribute to remove
    * @param $val       value
    */
-  final public function removeAttribute(string $attr)/*: this*/ {
+  final public function removeAttribute(string $attr): self {
     if (!self::isAttributeSpecial($attr)) {
         $value = $this->validateAttributeValue($attr, null);
       }
@@ -367,7 +367,7 @@ abstract class :x:composable-element extends :xhp {
    * @param $attr      attribute to set
    * @param $val       value
    */
-  final public function forceAttribute(string $attr, /*mixed*/ $value)/*: this*/ {
+  final public function forceAttribute(string $attr, mixed $value): self {
     $this->attributes[$attr] = $value;
     return $this;
   }
@@ -388,7 +388,7 @@ abstract class :x:composable-element extends :xhp {
    * @param mixed $default  The value to return if not set (optional)
    * @return mixed          The context value or $default
    */
-  final public function getContext(string $key, /*mixed*/ $default = null)/*: mixed*/ {
+  final public function getContext(string $key, mixed $default = null)/*: mixed*/ {
     return $this->context[$key] ?? $default;
   }
 
@@ -403,7 +403,7 @@ abstract class :x:composable-element extends :xhp {
    * @param mixed $default  if $key is a string, the value to set
    * @return :xhp           $this
    */
-  final public function setContext(string $key, /*mixed*/ $value)/*: this*/ {
+  final public function setContext(string $key, mixed $value): self {
     $this->context[$key] = $value;
     return $this;
   }
@@ -418,7 +418,7 @@ abstract class :x:composable-element extends :xhp {
    * @param array $context  A map of key/value pairs
    * @return :xhp         $this
    */
-  final public function addContextMap(iterable/*<string, mixed>*/ $context)/*: this*/ {
+  final public function addContextMap(iterable/*<string, mixed>*/ $context): self {
     foreach($context as $key => $value) {
       $this->context[$key] = $value;
     }
