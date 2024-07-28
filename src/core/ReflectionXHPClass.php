@@ -10,7 +10,11 @@
  */
 
 class ReflectionXHPClass {
-  private $className;
+  /** @var class-string<xhp_x__composable_element> */
+  private string $className;
+  /**
+   * @param class-string<xhp_x__composable_element> $className
+   */
   public function __construct(string $className) {
     $this->className = $className;
     assert(
@@ -23,6 +27,9 @@ class ReflectionXHPClass {
     return new ReflectionClass($this->getClassName());
   }
 
+  /**
+   * @return class-string<xhp_x__composable_element>
+   */
   public function getClassName(): string {
     return $this->className;
   }
@@ -49,12 +56,18 @@ class ReflectionXHPClass {
     return $map[$name];
   }
 
-  public function getAttributes(): iterable/*<string, ReflectionXHPAttribute>*/ {
+  /**
+   * @return array<string, ReflectionXHPAttribute>
+   */
+  public function getAttributes(): array {
     $class = $this->getClassName();
     return $class::__xhpReflectionAttributes();
   }
 
-  public function getCategories(): iterable/*<string>*/ {
+  /**
+   * @return array<string>
+   */
+  public function getCategories(): array {
     $class = $this->getClassName();
     return $class::__xhpReflectionCategoryDeclaration();
   }

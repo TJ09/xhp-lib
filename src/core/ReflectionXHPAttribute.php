@@ -12,7 +12,8 @@ final class XHPAttributeType extends XHPInternalEnumish {
 }
 
 class ReflectionXHPAttribute {
-  private /*XHPAttributeType*/ $type;
+  /** @var int<1, 9> */
+  private int $type;
   /*
    * OBJECT: string (class name)
    * ENUM: array<string> (enum values)
@@ -23,7 +24,7 @@ class ReflectionXHPAttribute {
   private bool $required;
 
   const SPECIAL_ATTRIBUTES = [ 'data', 'aria' ];
-  private $name;
+  private string $name;
 
   public function __construct(string $name, array $decl) {
     $this->name = $name;
@@ -37,6 +38,9 @@ class ReflectionXHPAttribute {
     return $this->name;
   }
 
+  /**
+   * @return int<1, 9>
+   */
   public function getValueType(): int {
     return $this->type;
   }
@@ -72,8 +76,10 @@ class ReflectionXHPAttribute {
     return $v;
   }
 
-  /*<<__Memoize>>*/
-  public function getEnumValues(): iterable/*<string>*/ {
+  /**
+   * @return array<string>
+   */
+  public function getEnumValues(): array {
     $t = $this->getValueType();
     assert(
       $this->getValueType() === XHPAttributeType::TYPE_ENUM,

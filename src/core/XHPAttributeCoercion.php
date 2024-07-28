@@ -70,7 +70,7 @@ final class XHPAttributeCoercion {
   ): int {
     self::LogCoercion($context, 'int', $attr, $val);
     if (
-      (is_string($val) && is_numeric($val) && $val !== '') || is_float($val)
+      (is_string($val) && is_numeric($val)) || is_float($val)
     ) {
       return (int)$val;
     }

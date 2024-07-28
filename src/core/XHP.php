@@ -13,13 +13,17 @@
  * @psalm-type XHPChild int|string|float|array|xhp_xhp|XHPUnsafeRenderable
  */
 abstract class :xhp implements JsonSerializable {
+  /**
+   * @param array<string, mixed> $attributes
+   * @param array<XHPChild> $children
+   */
   abstract public function __construct(
-    iterable/*<string, mixed>*/ $attributes,
-    iterable/*<XHPChild>*/ $children
+    array $attributes,
+    array $children
   );
   abstract public function appendChild(mixed $child): self;
   abstract public function prependChild(mixed $child): self;
-  abstract public function replaceChildren(/*...*/): self;
+  abstract public function replaceChildren(...$args): self;
   /**
    * @return array<XHPChild>
    */
@@ -29,10 +33,16 @@ abstract class :xhp implements JsonSerializable {
   abstract public function getFirstChild(?string $selector = null): null|int|string|float|array|:xhp|XHPUnsafeRenderable;
   abstract public function getLastChild(?string $selector = null): null|int|string|float|array|:xhp|XHPUnsafeRenderable;
   abstract public function getAttribute(string $attr): mixed;
-  abstract public function getAttributes(): array/*<string, mixed>*/;
+  /**
+   * @return array<string, mixed>
+   */
+  abstract public function getAttributes(): array;
   abstract public function setAttribute(string $attr, mixed $val): self;
+  /**
+   * @param iterable<string, mixed> $attrs
+   */
   abstract public function setAttributes(
-    iterable/*<string, mixed>*/ $attrs
+    iterable $attrs
   ): self;
   abstract public function isAttributeSet(string $attr): bool;
   abstract public function removeAttribute(string $attr): self;
@@ -103,7 +113,7 @@ abstract class :xhp implements JsonSerializable {
       return $child->toString();
     } else if ($child instanceof XHPUnsafeRenderable) {
       return $child->toHTMLString();
-    } else if ($child instanceof iterable || is_array($child)) {
+    } else if (is_iterable($child)) {
       throw new XHPRenderArrayException('Can not render traversables!');
     } else {
       return htmlspecialchars((string)$child);

@@ -13,8 +13,10 @@
  * @psalm-import-type XHPChild from xhp_xhp
  */
 abstract class :x:composable-element extends :xhp {
+  /** @var array<string, mixed> */
   private array $attributes = array();
   private array $children = array();
+  /** @var array<string, mixed> */
   private array $context = array();
 
   const SPECIAL_ATTRIBUTES = array('data' => true, 'aria' => true);
@@ -89,7 +91,7 @@ abstract class :x:composable-element extends :xhp {
    * @param $child     single child or array of children
    */
   final public function prependChild(mixed $child): self {
-    if (is_array($child) || $child instanceof Traversable) {
+    if (is_array($child)) {
       foreach (array_reverse($child) as $c) {
         $this->prependChild($c);
       }
@@ -107,9 +109,8 @@ abstract class :x:composable-element extends :xhp {
    *
    * @param $children  Single child or array of children
    */
-  final public function replaceChildren(/*...*/): self {
+  final public function replaceChildren(...$args): self {
     // This function has been micro-optimized
-    $args = func_get_args();
     $new_children = array();
     foreach ($args as $xhp) {
       if ($xhp) {
@@ -257,9 +258,12 @@ abstract class :x:composable-element extends :xhp {
     string $attr
   ): ?ReflectionXHPAttribute {
     $map = static::__xhpReflectionAttributes();
-	return $map[$attr] ?? null;
+    return $map[$attr] ?? null;
   }
 
+  /**
+   * @return array<string, ReflectionXHPAttribute>
+   */
   final public static function __xhpReflectionAttributes(
   ): array {
     static $cache = array();
@@ -328,10 +332,10 @@ abstract class :x:composable-element extends :xhp {
   /**
    * Takes an array of key/value pairs and adds each as an attribute.
    *
-   * @param $attrs    array of attributes
+   * @param iterable<string, mixed> $attrs    array of attributes
    */
   final public function setAttributes(
-    iterable/*<string, mixed>*/ $attrs
+    iterable $attrs,
   ): self {
     foreach ($attrs as $key => $value) {
       $this->setAttribute($key, $value);
@@ -379,9 +383,9 @@ abstract class :x:composable-element extends :xhp {
   /**
    * Returns all contexts currently set.
    *
-   * @return array  All contexts
+   * @return array<string, mixed>  All contexts
    */
-  final public function getAllContexts(): array/*<string, mixed>*/ {
+  final public function getAllContexts(): array {
     return $this->context;
   }
 
@@ -392,7 +396,7 @@ abstract class :x:composable-element extends :xhp {
    * @param mixed $default  The value to return if not set (optional)
    * @return mixed          The context value or $default
    */
-  final public function getContext(string $key, mixed $default = null)/*: mixed*/ {
+  final public function getContext(string $key, mixed $default = null): mixed {
     return $this->context[$key] ?? $default;
   }
 
@@ -418,9 +422,9 @@ abstract class :x:composable-element extends :xhp {
    * that are rendered as children of that root element will receive this
    * context WHEN RENDERED. The context will not be available before render.
    *
-   * @param array $context  A map of key/value pairs
+   * @param iterable<string, mixed> $context  A map of key/value pairs
    */
-  final public function addContextMap(iterable/*<string, mixed>*/ $context): self {
+  final public function addContextMap(iterable $context): self {
     foreach($context as $key => $value) {
       $this->context[$key] = $value;
     }
@@ -432,10 +436,10 @@ abstract class :x:composable-element extends :xhp {
    * for rendering because we don't want a parent's context to replace a
    * child's context if they have the same key.
    *
-   * @param array $parentContext  The context to transfer
+   * @param iterable<string, mixed> $parentContext  The context to transfer
    */
   final protected function __transferContext(
-    iterable/*<string, mixed>*/ $parentContext
+    iterable $parentContext
   ): void {
     foreach ($parentContext as $key => $value) {
       if (!array_key_exists($key, $this->context)) {
@@ -511,7 +515,7 @@ abstract class :x:composable-element extends :xhp {
   final protected function validateAttributeValue/*<T>*/(
     string $attr,
 /*T*/ $val
-  )/*: mixed*/ {
+  ): mixed {
     $decl = static::__xhpAttributeDeclaration();
     if (!isset($decl[$attr])) {
       throw new XHPAttributeNotSupportedException($this, $attr);

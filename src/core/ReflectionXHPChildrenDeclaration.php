@@ -23,12 +23,15 @@ final class XHPChildrenConstraintType extends XHPInternalEnumish {
 class ReflectionXHPChildrenDeclaration {
   private $context;
   private $data;
-  public function __construct(string $context, /*mixed*/ $data) {
+
+  public function __construct(string $context, mixed $data) {
     $this->context = $context;
     $this->data = $data;
   }
 
-  /*<<__Memoize>>*/
+  /**
+   * @return 0|1|-1
+   */
   public function getType(): int {
     if (is_array($this->data)) {
       return XHPChildrenDeclarationType::EXPRESSION;
@@ -36,7 +39,6 @@ class ReflectionXHPChildrenDeclaration {
     return XHPChildrenDeclarationType::assert($this->data);
   }
 
-  /*<<__Memoize>>*/
   public function getExpression(): ReflectionXHPChildrenExpression {
     $data = $this->data;
     assert(
@@ -72,14 +74,18 @@ class ReflectionXHPChildrenExpression {
     $this->data = $data;
   }
 
-  /*<<__Memoize>>*/
+  /**
+   * @return 0|1|2|3|4|5
+   */
   public function getType(): int {
     return XHPChildrenExpressionType::assert($this->data[0]);
   }
 
-  /*<<__Memoize>>*/
+  /**
+   * @return array{0: ReflectionXHPChildrenExpression, 1: ReflectionXHPChildrenExpression}
+   */
   public function getSubExpressions(
-  ): array/*(ReflectionXHPChildrenExpression, ReflectionXHPChildrenExpression)*/ {
+  ): array {
     $type = $this->getType();
     assert(
       $type === XHPChildrenExpressionType::SUB_EXPR_SEQUENCE ||
@@ -100,7 +106,9 @@ class ReflectionXHPChildrenExpression {
     );
   }
 
-  /*<<__Memoize>>*/
+  /**
+   * @return 1|2|3|4|5
+   */
   public function getConstraintType(): int {
     $type = $this->getType();
     assert(
@@ -112,7 +120,6 @@ class ReflectionXHPChildrenExpression {
     return XHPChildrenConstraintType::assert($this->data[1]);
   }
 
-  /*<<__Memoize>>*/
   public function getConstraintString(): string {
     $type = $this->getConstraintType();
     assert(
