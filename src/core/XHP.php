@@ -9,7 +9,10 @@
  *
  */
 
-abstract class :xhp implements XHPChild, JsonSerializable {
+/**
+ * @psalm-type XHPChild int|string|float|array|xhp_xhp|XHPUnsafeRenderable
+ */
+abstract class :xhp implements JsonSerializable {
   abstract public function __construct(
     iterable/*<string, mixed>*/ $attributes,
     iterable/*<XHPChild>*/ $children
@@ -17,12 +20,15 @@ abstract class :xhp implements XHPChild, JsonSerializable {
   abstract public function appendChild(mixed $child): self;
   abstract public function prependChild(mixed $child): self;
   abstract public function replaceChildren(/*...*/): self;
+  /**
+   * @return array<XHPChild>
+   */
   abstract public function getChildren(
     ?string $selector = null
-  ): array/*<XHPChild>*/;
-  abstract public function getFirstChild(?string $selector = null)/*: ?XHPChild*/;
-  abstract public function getLastChild(?string $selector = null)/*: ?XHPChild*/;
-  abstract public function getAttribute(string $attr)/*: mixed*/;
+  ): array;
+  abstract public function getFirstChild(?string $selector = null): null|int|string|float|array|:xhp|XHPUnsafeRenderable;
+  abstract public function getLastChild(?string $selector = null): null|int|string|float|array|:xhp|XHPUnsafeRenderable;
+  abstract public function getAttribute(string $attr): mixed;
   abstract public function getAttributes(): array/*<string, mixed>*/;
   abstract public function setAttribute(string $attr, mixed $val): self;
   abstract public function setAttributes(
@@ -87,9 +93,11 @@ abstract class :xhp implements XHPChild, JsonSerializable {
     return $this->toString();
   }
 
+  /**
+   * @param XHPChild $child
+   */
   final protected static function renderChild(
-    // FIXME: See XHPChild declaration.
-    /*XHPChild*/ $child
+    int|string|float|array|:xhp|XHPUnsafeRenderable $child
   ): string {
     if ($child instanceof :xhp) {
       return $child->toString();

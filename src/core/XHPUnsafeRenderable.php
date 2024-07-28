@@ -17,6 +17,6 @@
  * content, usually in combination with XHPAlwaysValidChild; see MIGRATING.md
  * for more information.
  */
-interface XHPUnsafeRenderable extends XHPChild {
+interface XHPUnsafeRenderable {
   public function toHTMLString(): string;
 }

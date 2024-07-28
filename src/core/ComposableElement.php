@@ -9,6 +9,9 @@
  *
  */
 
+/**
+ * @psalm-import-type XHPChild from xhp_xhp
+ */
 abstract class :x:composable-element extends :xhp {
   private array $attributes = array();
   private array $children = array();
@@ -138,10 +141,10 @@ abstract class :x:composable-element extends :xhp {
    * name or category (or all children if none is given)
    *
    * @param $selector   tag name or category (optional)
-   * @return array
+   * @return array<XHPChild>
    */
   final public function getChildren(?string $selector = null): array {
-    if (!$selector) {
+    if ($selector === null || $selector === '') {
       return $this->children;
     }
     $result = array();
@@ -169,11 +172,11 @@ abstract class :x:composable-element extends :xhp {
    * matches the tag if one is given
    *
    * @param $selector   string   tag name or category (optional)
-   * @return            element  the first child node (with the given selector),
+   * @return            ?XHPChild  the first child node (with the given selector),
    *                             false if there are no (matching) children
    */
-  final public function getFirstChild(?string $selector = null): ?XHPChild {
-    if (!$selector) {
+  final public function getFirstChild(?string $selector = null): null|int|string|float|array|:xhp|XHPUnsafeRenderable {
+    if ($selector === null || $selector === '') {
       return $this->children[0];
     } else if ($selector[0] == '%') {
       $selector = substr($selector, 1);
@@ -198,10 +201,10 @@ abstract class :x:composable-element extends :xhp {
    * matches the tag or category if one is given
    *
    * @param $selector  string   tag name or category (optional)
-   * @return           element  the last child node (with the given selector),
+   * @return           ?XHPChild  the last child node (with the given selector),
    *                            false if there are no (matching) children
    */
-  final public function getLastChild(?string $selector = null): ?XHPChild {
+  final public function getLastChild(?string $selector = null): null|int|string|float|array|:xhp|XHPUnsafeRenderable {
     $temp = $this->getChildren($selector);
     return end($temp);
     }
@@ -228,7 +231,7 @@ abstract class :x:composable-element extends :xhp {
    *
    * @param $attr      attribute to fetch
    */
-  final public function getAttribute(string $attr) {
+  final public function getAttribute(string $attr): mixed {
     // Return the attribute if it's there
     if (array_key_exists($attr, $this->attributes)) {
       return $this->attributes[$attr];
@@ -310,15 +313,15 @@ abstract class :x:composable-element extends :xhp {
    * @param $attr      attribute to set
    * @param $val       value
    */
-  final public function setAttribute(string $attr, mixed $value): self {
+  final public function setAttribute(string $attr, mixed $val): self {
     if (!self::isAttributeSpecial($attr)) {
       if (:xhp::isAttributeValidationEnabled()) {
-        $value = $this->validateAttributeValue($attr, $value);
+        $val = $this->validateAttributeValue($attr, $val);
       }
     } else {
-      $value = (string)$value;
+      $val = (string)$val;
     }
-    $this->attributes[$attr] = $value;
+    $this->attributes[$attr] = $val;
     return $this;
   }
 
@@ -402,7 +405,6 @@ abstract class :x:composable-element extends :xhp {
    *
    * @param mixed $key      Either a key, or an array of key/value pairs
    * @param mixed $default  if $key is a string, the value to set
-   * @return :xhp           $this
    */
   final public function setContext(string $key, mixed $value): self {
     $this->context[$key] = $value;
@@ -417,7 +419,6 @@ abstract class :x:composable-element extends :xhp {
    * context WHEN RENDERED. The context will not be available before render.
    *
    * @param array $context  A map of key/value pairs
-   * @return :xhp         $this
    */
   final public function addContextMap(iterable/*<string, mixed>*/ $context): self {
     foreach($context as $key => $value) {
@@ -710,7 +711,6 @@ abstract class :x:composable-element extends :xhp {
         }
         $category = :xhp::class2element($rule);
         $child = $this->children[$index];
-        assert($child instanceof :xhp);
         $categories = $child->__xhpCategoryDeclaration();
         if (empty($categories[$category])) {
           return false;
@@ -803,13 +803,13 @@ abstract class :x:composable-element extends :xhp {
     return implode(',', $desc);
   }
 
-  final public function categoryOf(string $c): bool {
+  final public function categoryOf(string $cat): bool {
     $categories = $this->__xhpCategoryDeclaration();
-    if (isset($categories[$c])) {
+    if (isset($categories[$cat])) {
       return true;
     }
     // XHP parses the category string
-    $c = str_replace(array(':', '-'), array('__', '_'), $c);
-    return isset($categories[$c]);
+    $cat = str_replace(array(':', '-'), array('__', '_'), $cat);
+    return isset($categories[$cat]);
   }
 }
