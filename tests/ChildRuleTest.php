@@ -8,6 +8,8 @@
  *
  */
 
+use PHPUnit\Framework\Attributes\DataProvider;
+
 class :test:any-children extends :x:element {
   children any;
   protected function render(): XHPRoot {
@@ -140,9 +142,7 @@ class ChildRuleTest extends PHPUnit\Framework\TestCase {
     }
   }
 
-  /**
-   * @dataProvider toStringProvider 
-   */
+  #[DataProvider('toStringProvider')]
   public function testToString(
     :x:composable-element $elem,
     string $expected
@@ -150,7 +150,7 @@ class ChildRuleTest extends PHPUnit\Framework\TestCase {
     $this->assertSame($expected, $elem->__getChildrenDeclaration());
   }
 
-  public function toStringProvider() {
+  public static function toStringProvider() {
     return [
       [<test:any-children />, 'any'],
       [<test:no-children />, 'empty'],

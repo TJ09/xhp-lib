@@ -98,20 +98,4 @@ class AttributesCoercionModeTest extends PHPUnit\Framework\TestCase {
     $x = <test:attribute-coercion-modes mystring={2} />;
     $this->assertSame('2', $x->:mystring);
   }
-
-  public function testLoggingDeprecationCoercion(): void {
-    error_reporting(E_ALL);
-    $exception = null;
-    XHPAttributeCoercion::SetMode(XHPAttributeCoercionMode::LOG_DEPRECATION);
-    try {
-      $x = <test:attribute-coercion-modes mystring={2} />;
-    } catch (Exception $e) {
-      $exception = $e;
-    }
-    $this->assertInstanceOf(PHPUnit\Framework\Error\Deprecated::class, $exception);
-
-    error_reporting(E_ALL & ~E_USER_DEPRECATED);
-    $x = <test:attribute-coercion-modes mystring={2} />;
-    $this->assertSame('2', $x->:mystring);
-  }
 }

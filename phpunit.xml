@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<phpunit convertDeprecationsToExceptions="true">
+<phpunit>
   <testsuites>
     <testsuite name="XHP-Lib Tests">
       <directory>tests/</directory>
