@@ -12,9 +12,15 @@
 class :img extends :xhp:html-singleton {
   attribute
     string alt,
+    string attributionsrc,
     enum {'anonymous', 'use-credentials'} crossorigin,
+    enum {'async', 'auto', 'sync'} decoding,
+    string elementtiming,
+    enum {'auto', 'high', 'low'} fetchpriority,
     int height,
     bool ismap,
+    enum {'eager', 'lazy'} loading,
+    enum {'no-referrer', 'no-referrer-when-downgrade', 'origin', 'origin-when-cross-origin', 'same-origin', 'strict-origin', 'strict-origin-when-cross-origin', 'unsafe-url'} referrerpolicy,
     string sizes,
     string src,
     string srcset,
