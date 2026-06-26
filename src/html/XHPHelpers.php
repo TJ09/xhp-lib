@@ -9,18 +9,13 @@
  *
  */
 
-interface HasXHPHelpers
-  extends HasXHPBaseHTMLHelpers, XHPHasTransferAttributes {
-}
-
 /*
  * Use of this trait assumes you have inherited attributes from an HTML element.
  * For the bare minimum, use:
  *
  * attribute :xhp:html-element;
  */
-trait XHPHelpers /*implements HasXHPHelpers*/ {
-  // require extends :x:composable-element;
+trait XHPHelpers {
 
   use XHPBaseHTMLHelpers;
 
@@ -146,13 +141,6 @@ trait XHPHelpers /*implements HasXHPHelpers*/ {
     :x:composable-element $root
   ): void {
     if (:xhp::isAttributeValidationEnabled() && $root instanceof :x:element) {
-      if (!($root instanceof HasXHPHelpers)) {
-        throw new XHPClassException(
-          $this,
-          'render() must return an object using the XHPHelpers trait.'
-        );
-      }
-
       $rootID = $root->getAttribute('id') ?: null;
       $thisID = $this->getAttribute('id') ?: null;
 
