@@ -15,7 +15,7 @@ class :form extends :xhp:html-element {
     string accept-charset,
     enum {'on', 'off'} autocomplete,
     string enctype,
-    enum {'get', 'post'} method,
+    enum {'get', 'post', 'dialog'} method,
     string name,
     bool novalidate,
     string target;

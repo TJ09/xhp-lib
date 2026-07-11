@@ -12,15 +12,19 @@
 class :button extends :xhp:html-element {
   attribute
     bool autofocus,
+    string command,
+    string commandfor,
     bool disabled,
     string form,
     string formaction,
     string formenctype,
-    enum {'get', 'post'} formmethod,
+    enum {'get', 'post', 'dialog'} formmethod,
     bool formnovalidate,
     string formtarget,
     string menu,
     string name,
+    string popovertarget,
+    enum {'hide', 'show', 'toggle'} popovertargetaction,
     enum {'submit', 'button', 'reset'} type,
     string value;
   category %flow, %phrase, %interactive;

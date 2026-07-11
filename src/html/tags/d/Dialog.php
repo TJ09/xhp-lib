@@ -10,7 +10,9 @@
  */
 
 class :dialog extends :xhp:html-element {
-  attribute bool open;
+  attribute
+    enum {'any', 'closerequest', 'none'} closedby,
+    bool open;
   category %flow, %sectioning;
   children (%flow);
   protected string $tagName = 'dialog';
